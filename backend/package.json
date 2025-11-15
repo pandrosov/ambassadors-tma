@@ -15,7 +15,8 @@
     "set-admin-password": "tsx scripts/set-admin-password.ts",
     "create-admin": "tsx scripts/create-admin.ts",
     "create-admin-interactive": "tsx scripts/create-admin-simple.ts",
-    "create-admin-railway": "tsx scripts/create-admin-railway.ts"
+    "create-admin-railway": "tsx scripts/create-admin-railway.ts",
+    "activate-admin": "tsx scripts/activate-admin.ts"
   },
   "dependencies": {
     "@ambassadors/shared": "*",
