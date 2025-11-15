@@ -37,12 +37,21 @@ export async function authenticateJWT(
     });
 
     if (!user) {
+      console.log('[JWT Auth] User not found, userId:', payload.userId);
       return res.status(401).json({ error: 'Unauthorized', message: 'Пользователь не найден' });
     }
 
+    if (user.status !== 'ACTIVE') {
+      console.log('[JWT Auth] User not active, userId:', payload.userId, 'status:', user.status);
+      return res.status(403).json({ error: 'Forbidden', message: 'Аккаунт неактивен' });
+    }
+
     if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+      console.log('[JWT Auth] Insufficient permissions, userId:', payload.userId, 'role:', user.role);
       return res.status(403).json({ error: 'Forbidden', message: 'Недостаточно прав доступа' });
     }
+
+    console.log('[JWT Auth] User authenticated:', { id: user.id, role: user.role, status: user.status });
 
     req.user = {
       id: user.id,
