@@ -106,7 +106,7 @@ export function initTelegramWebApp() {
 /**
  * Получение initData для аутентификации
  */
-export function getInitData(): string | null {
+export async function getInitData(): Promise<string | null> {
   try {
     // Используем нативный Telegram WebApp API
     if (window.Telegram?.WebApp?.initData) {
@@ -154,7 +154,7 @@ export function getInitData(): string | null {
 /**
  * Получение данных пользователя из Telegram
  */
-export function getTelegramUser() {
+export async function getTelegramUser(): Promise<any> {
   try {
     // Используем нативный Telegram WebApp API
     if (window.Telegram?.WebApp) {

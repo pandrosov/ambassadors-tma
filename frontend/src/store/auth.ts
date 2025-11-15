@@ -40,7 +40,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ loading: true, error: null });
       
       // Получаем данные пользователя из Telegram
-      const tgUser = getTelegramUser();
+      const tgUser = await getTelegramUser();
       
       console.log('Initializing auth, Telegram user:', tgUser);
       
@@ -126,7 +126,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       // Если ошибка 401/404, возможно пользователя нет в базе - создаем мокового для разработки
       if (error.response?.status === 401 || error.response?.status === 404) {
         console.warn('User not authenticated. Using mock user for development.');
-        const tgUser = getTelegramUser();
+        const tgUser = await getTelegramUser();
         const mockUser: User = {
           id: 'dev-user-1',
           telegramId: tgUser?.id || 123456789,

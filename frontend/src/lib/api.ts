@@ -74,7 +74,7 @@ api.interceptors.request.use((config) => {
   }
 
   // Иначе используем Telegram аутентификацию
-  const initData = getInitData();
+  const initData = await getInitData();
   
   if (initData) {
     config.headers['X-Telegram-Init-Data'] = initData;
@@ -101,7 +101,7 @@ api.interceptors.request.use((config) => {
     }
   } else {
     // Режим разработки: добавляем тестовый telegramId
-    const tgUser = getTelegramUser();
+    const tgUser = await getTelegramUser();
     if (tgUser?.id) {
       config.headers['X-Telegram-Id'] = tgUser.id.toString();
     } else {
