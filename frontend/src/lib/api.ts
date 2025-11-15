@@ -6,13 +6,42 @@ const getApiUrl = () => {
   // Приоритет 1: Переменная окружения (самый надежный способ)
   const env = import.meta.env as any;
   if (env.VITE_API_URL) {
+    console.log('Using backend URL from VITE_API_URL:', env.VITE_API_URL);
     return env.VITE_API_URL;
   }
   
-  // Приоритет 2: Если запущено в Telegram через cloudflare/ngrok
+  // Приоритет 2: Production на Railway - определяем URL бэкенда автоматически
   const currentHost = window.location.hostname;
+  const isProduction = currentHost.includes('railway.app') || currentHost.includes('up.railway.app');
   
-  // Если это cloudflare домен, пытаемся использовать публичный backend URL
+  if (isProduction) {
+    // На Railway фронтенд и бэкенд обычно на разных поддоменах
+    // Пытаемся определить URL бэкенда из текущего домена
+    // Например: amb-frontend-production.up.railway.app -> amb-backend-production.up.railway.app
+    // Или используем общий домен: ambassadors-tma-production.up.railway.app
+    
+    // Вариант 1: Заменить frontend на backend в домене
+    let backendUrl = window.location.origin.replace('frontend', 'backend');
+    
+    // Вариант 2: Если не сработало, используем основной домен Railway
+    if (backendUrl === window.location.origin) {
+      // Пытаемся извлечь основной домен
+      const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
+      if (match) {
+        const [, serviceName, , rest] = match;
+        backendUrl = `https://${serviceName}-backend${rest}`;
+      } else {
+        // Fallback: используем основной production домен
+        backendUrl = 'https://ambassadors-tma-production.up.railway.app';
+      }
+    }
+    
+    console.log('Production mode detected. Using backend URL:', backendUrl);
+    console.warn('⚠️ Для production рекомендуется установить VITE_API_URL в Railway Variables');
+    return backendUrl;
+  }
+  
+  // Приоритет 3: Если запущено в Telegram через cloudflare/ngrok
   if (currentHost.includes('trycloudflare.com') || currentHost.includes('ngrok')) {
     // Пробуем загрузить backend URL из localStorage (сохраняется скриптом)
     const savedBackendUrl = localStorage.getItem('backend_api_url');
@@ -21,35 +50,12 @@ const getApiUrl = () => {
       return savedBackendUrl;
     }
     
-    // Используем текущий backend URL по умолчанию для Cloudflare туннеля
-    // Backend URL обновляется автоматически при перезапуске туннеля
-    // Текущий URL: https://organizing-venture-containers-oliver.trycloudflare.com
-    if (currentHost.includes('trycloudflare.com')) {
-      // Пробуем получить из переменной окружения (самый актуальный)
-      const env = import.meta.env as any;
-      if (env.VITE_API_URL) {
-        console.log('Using backend URL from VITE_API_URL:', env.VITE_API_URL);
-        return env.VITE_API_URL;
-      }
-      // Fallback на последний известный URL (будет обновлен автоматически)
-      // Если VITE_API_URL не установлен, используем значение из localStorage или последний известный URL
-      const savedBackendUrl = localStorage.getItem('backend_api_url');
-      if (savedBackendUrl) {
-        console.log('Using saved backend URL from localStorage:', savedBackendUrl);
-        return savedBackendUrl;
-      }
-      // Последний известный URL (обновляется при перезапуске туннеля)
-      const backendUrl = 'https://celebrities-lopez-got-left.trycloudflare.com';
-      console.warn('Using fallback backend URL. Consider setting VITE_API_URL or localStorage.backend_api_url');
-      return backendUrl;
-    }
-    
-    // Если нет сохраненного URL, показываем предупреждение
     console.warn('Backend URL не настроен! Создайте туннель для backend и установите VITE_API_URL');
     console.warn('Или выполните: localStorage.setItem("backend_api_url", "https://your-backend-url.trycloudflare.com")');
   }
   
   // По умолчанию: localhost для локальной разработки
+  console.log('Development mode: using localhost:3000');
   return 'http://localhost:3000';
 };
 
