@@ -252,9 +252,9 @@ export default function ShopPage() {
               Нет доступных товаров
             </Alert>
           ) : (
-            <Grid2 container spacing={3}>
+            <Grid container spacing={3}>
               {filteredItems.map((item) => (
-                <Grid2 xs={12} sm={6} md={4} key={item.id}>
+                <Grid xs={12} sm={6} md={4} key={item.id}>
                   <Card
                     sx={{
                       height: '100%',
@@ -316,9 +316,9 @@ export default function ShopPage() {
                       </Button>
                     </CardActions>
                   </Card>
-                </Grid2>
+                </Grid>
               ))}
-            </Grid2>
+            </Grid>
           )}
         </>
       )}
@@ -330,9 +330,9 @@ export default function ShopPage() {
               У вас пока нет покупок
             </Alert>
           ) : (
-            <Grid2 container spacing={2}>
+            <Grid container spacing={2}>
               {purchases.map((purchase) => (
-                <Grid2 xs={12} key={purchase.id}>
+                <Grid xs={12} key={purchase.id}>
                   <Card>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -366,9 +366,9 @@ export default function ShopPage() {
                       </Box>
                     </CardContent>
                   </Card>
-                </Grid2>
+                </Grid>
               ))}
-            </Grid2>
+            </Grid>
           )}
         </>
       )}
