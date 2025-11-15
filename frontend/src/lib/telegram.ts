@@ -1,5 +1,3 @@
-import { SDKProvider, retrieveLaunchParams } from '@telegram-apps/sdk';
-
 declare global {
   interface Window {
     Telegram?: {
@@ -7,9 +5,39 @@ declare global {
         ready: () => void;
         expand: () => void;
         close: () => void;
+        version?: string;
+        platform?: string;
+        initData?: string;
+        initDataUnsafe?: {
+          user?: {
+            id: number;
+            first_name?: string;
+            last_name?: string;
+            username?: string;
+            language_code?: string;
+            phone_number?: string;
+          };
+          auth_date?: number;
+        };
+        themeParams?: {
+          bg_color?: string;
+          text_color?: string;
+          hint_color?: string;
+          link_color?: string;
+          button_color?: string;
+          button_text_color?: string;
+        };
+        setHeaderColor?: (color: string) => void;
+        setBackgroundColor?: (color: string) => void;
+        enableClosingConfirmation?: () => void;
+        showAlert?: (message: string, callback?: () => void) => void;
+        requestContact?: (callback: (contact: any) => void) => void;
         MainButton: {
           text: string;
+          isVisible?: boolean;
+          setText: (text: string) => void;
           onClick: (callback: () => void) => void;
+          offClick: (callback: () => void) => void;
           show: () => void;
           hide: () => void;
           enable: () => void;
