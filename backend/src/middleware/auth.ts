@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { parseTelegramInitData, validateTelegramInitData, getTelegramUserData } from '../lib/telegramAuth';
 
 // Расширяем тип Request для хранения пользователя

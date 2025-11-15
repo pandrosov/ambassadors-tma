@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { requireRole } from '../middleware/auth';
 import { authenticateAdmin } from '../middleware/adminAuth';
 import { createAuditLog } from '../lib/auditLog';

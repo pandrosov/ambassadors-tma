@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { authenticateTelegram, requireRole } from '../middleware/auth';
 import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck';
 import { createAuditLog } from '../lib/auditLog';
