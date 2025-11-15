@@ -1,11 +1,13 @@
 # Backend Dockerfile
 # Railway использует этот файл когда Root Directory = backend
-# ВАЖНО: Railway копирует весь репозиторий в build context (корень проекта)
+# ВАЖНО: Когда Root Directory = backend, Railway меняет build context на backend/
+# Но Railway все еще копирует весь репозиторий, поэтому используем относительные пути
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Railway копирует весь репозиторий, поэтому build context = корень проекта
+# Railway копирует весь репозиторий в build context
+# Когда Root Directory = backend, build context = корень проекта
 # Сначала копируем package.json файлы для установки зависимостей
 COPY package*.json ./
 COPY shared/package.json ./shared/
@@ -17,8 +19,9 @@ COPY backend/package.json ./backend/
 RUN npm install --workspaces --legacy-peer-deps --ignore-scripts
 
 # Теперь копируем весь код (после установки зависимостей для лучшего кеширования)
-COPY shared ./shared
-COPY backend ./backend
+# Используем абсолютные пути от корня build context
+COPY shared/ ./shared/
+COPY backend/ ./backend/
 
 # Генерируем Prisma Client и собираем проект
 WORKDIR /app/backend
