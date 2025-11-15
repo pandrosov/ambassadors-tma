@@ -2,10 +2,10 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "cd .. && npm install && cd frontend && npm run build"
+    "buildCommand": "cd $RAILWAY_WORKSPACE_ROOT && npm install --workspaces && cd frontend && npm run build"
   },
   "deploy": {
-    "startCommand": "npx serve -s dist -l $PORT",
+    "startCommand": "cd $RAILWAY_WORKSPACE_ROOT/frontend && npx serve -s dist -l $PORT",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
