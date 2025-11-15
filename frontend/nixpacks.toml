@@ -2,13 +2,15 @@
 nixPkgs = ["nodejs_18", "npm-9_x", "openssl"]
 
 [phases.install]
-# Если Root Directory = frontend, переходим в родительскую директорию
-# Railway клонирует репозиторий в /app, поэтому если мы в /app/frontend, то cd .. перейдет в /app
-cmds = ["cd .. && npm install --workspaces"]
+# Устанавливаем зависимости из корня проекта для работы с workspaces
+# Railway клонирует весь репозиторий, поэтому можем перейти в корень
+cmds = ["cd $RAILWAY_SOURCE_DIR && npm install --workspaces"]
 
 [phases.build]
+# Собираем фронтенд из его директории
 cmds = ["cd frontend && npm run build"]
 
 [start]
+# Запускаем сервер из директории frontend
 cmd = "cd frontend && npx serve -s dist -l $PORT"
 
