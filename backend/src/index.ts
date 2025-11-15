@@ -18,6 +18,8 @@ dotenv.config();
 
 const app = express();
 const prisma = new PrismaClient();
+// Railway автоматически устанавливает PORT через переменную окружения
+// По умолчанию используем 3000, но Railway может установить другой порт
 const PORT = process.env.PORT || 3000;
 
 // Middleware для логирования запросов (только в development)

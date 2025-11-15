@@ -29,6 +29,10 @@ RUN npx prisma generate && npm run build
 # Production образ
 FROM node:18-alpine
 
+# Устанавливаем OpenSSL для Prisma
+# Prisma требует libssl.so.1.1 для работы в Alpine Linux
+RUN apk add --no-cache openssl1.1-compat
+
 WORKDIR /app
 
 # Копируем package.json для установки только production зависимостей
