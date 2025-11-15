@@ -8,5 +8,5 @@ cmds = ["npm install"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "node dist/index.js"
+cmd = "cd backend && node dist/index.js"
 

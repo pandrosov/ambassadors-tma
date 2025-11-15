@@ -13,3 +13,5 @@ get-*.sh
 start-*.sh
 restart-*.sh
 *.log
+package.json
+!backend/package.json
