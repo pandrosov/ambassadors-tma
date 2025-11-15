@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateTelegram, requireRole } from '../middleware/auth';
-import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck';
+import { authenticateTelegram, requireRole } from '../middleware/auth.js';
+import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck.js';
 import { z } from 'zod';
-import { createAuditLog } from '../lib/auditLog';
+import { createAuditLog } from '../lib/auditLog.js';
 
 const router = Router();
 

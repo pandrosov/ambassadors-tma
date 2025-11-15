@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../lib/jwt';
+import { verifyToken } from '../lib/jwt.js';
 import { prisma } from '../lib/prisma.js';
 
 export async function authenticateJWT(

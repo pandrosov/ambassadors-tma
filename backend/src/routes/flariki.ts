@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateTelegram, requireRole } from '../middleware/auth';
+import { authenticateTelegram, requireRole } from '../middleware/auth.js';
 import { z } from 'zod';
 
 const router = Router();

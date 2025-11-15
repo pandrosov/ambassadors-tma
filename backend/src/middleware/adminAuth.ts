@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticateTelegram, requireRole as requireRoleAuth } from './auth';
-import { authenticateJWT } from './jwtAuth';
+import { authenticateTelegram, requireRole as requireRoleAuth } from './auth.js';
+import { authenticateJWT } from './jwtAuth.js';
 
 /**
  * Универсальный middleware для админ-панели

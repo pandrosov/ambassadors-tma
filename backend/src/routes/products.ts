@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateAdmin, requireRole } from '../middleware/adminAuth';
+import { authenticateAdmin, requireRole } from '../middleware/adminAuth.js';
 import { z } from 'zod';
-import { createAuditLog } from '../lib/auditLog';
+import { createAuditLog } from '../lib/auditLog.js';
 
 const router = Router();
 

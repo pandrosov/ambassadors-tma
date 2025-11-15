@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { generateToken } from '../lib/jwt';
+import { generateToken } from '../lib/jwt.js';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 

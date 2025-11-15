@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateTelegram, requireRole } from '../middleware/auth';
-import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck';
-import { createAuditLog } from '../lib/auditLog';
-import { sendTelegramMessage } from '../services/telegram';
-import { uploadScreenshot, getFileUrl } from '../middleware/upload';
+import { authenticateTelegram, requireRole } from '../middleware/auth.js';
+import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck.js';
+import { createAuditLog } from '../lib/auditLog.js';
+import { sendTelegramMessage } from '../services/telegram.js';
+import { uploadScreenshot, getFileUrl } from '../middleware/upload.js';
 import { z } from 'zod';
-import { syncReportToSheets } from '../services/sheets';
+import { syncReportToSheets } from '../services/sheets.js';
 
 const router = Router();
 

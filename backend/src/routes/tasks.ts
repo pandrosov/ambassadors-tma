@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateTelegram, requireRole } from '../middleware/auth';
-import { authenticateAdmin } from '../middleware/adminAuth';
-import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck';
-import { createAuditLog } from '../lib/auditLog';
-import { notifyNewTask, sendTelegramMessage } from '../services/telegram';
+import { authenticateTelegram, requireRole } from '../middleware/auth.js';
+import { authenticateAdmin } from '../middleware/adminAuth.js';
+import { requireActiveStatus, requireProfileFilled } from '../middleware/profileCheck.js';
+import { createAuditLog } from '../lib/auditLog.js';
+import { notifyNewTask, sendTelegramMessage } from '../services/telegram.js';
 import { z } from 'zod';
 
 const router = Router();

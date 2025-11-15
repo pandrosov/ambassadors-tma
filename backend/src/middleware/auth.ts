@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { parseTelegramInitData, validateTelegramInitData, getTelegramUserData } from '../lib/telegramAuth';
+import { parseTelegramInitData, validateTelegramInitData, getTelegramUserData } from '../lib/telegramAuth.js';
 
 // Расширяем тип Request для хранения пользователя
 declare global {

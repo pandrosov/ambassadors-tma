@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { getTelegramBot } from '../services/telegram';
+import { getTelegramBot } from '../services/telegram.js';
 
 /**
  * Проверка подписи initData от Telegram
