@@ -65,7 +65,7 @@ const api = axios.create({
 });
 
 // Добавляем initData или JWT токен в заголовки для аутентификации
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
   // Проверяем, есть ли JWT токен в localStorage (для админ-панели)
   const jwtToken = localStorage.getItem('admin_token');
   if (jwtToken && config.url?.includes('/admin')) {

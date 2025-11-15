@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # PostgreSQL сервис - опционален, используется только для локальной разработки
+  # Если у вас уже есть БД в Railway, закомментируйте этот сервис
+  # и используйте DATABASE_URL из Railway в переменных окружения backend
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-ambassadors}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - local-db  # Используется только при запуске: docker-compose --profile local-db up
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # Используйте DATABASE_URL из Railway или локальную БД
+      # Для Railway: используйте DATABASE_URL из переменных окружения Railway
+      # Для локальной БД: postgresql://postgres:postgres@postgres:5432/ambassadors
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-ambassadors}}
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    # Зависимость от postgres только если используется локальная БД
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false
+    volumes:
+      - ./backend/prisma:/app/backend/prisma
+    command: sh -c "cd /app/backend && npx prisma migrate deploy && node dist/index.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Используйте URL вашего Railway backend или localhost для локальной разработки
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+      PORT: 80
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

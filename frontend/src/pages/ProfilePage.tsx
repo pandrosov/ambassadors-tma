@@ -9,9 +9,9 @@ import {
   Button,
   Avatar,
   Chip,
-  Grid,
   CircularProgress,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   Edit,
   Save,
@@ -308,7 +308,7 @@ export default function ProfilePage() {
           </Box>
 
           <Grid container spacing={3}>
-            <Grid xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Телефон"
@@ -320,7 +320,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Email"
@@ -333,7 +333,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Ближайший ПВЗ СДЭК"
@@ -345,7 +345,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Адрес проживания"
@@ -367,7 +367,7 @@ export default function ProfilePage() {
             Социальные сети
           </Typography>
           <Grid container spacing={3}>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Instagram"
@@ -381,7 +381,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="YouTube"
@@ -395,7 +395,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="TikTok"
@@ -409,7 +409,7 @@ export default function ProfilePage() {
                 }}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="VK"

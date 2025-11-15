@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -21,6 +19,7 @@ import {
   Tab,
   CircularProgress,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   ShoppingCart,
   AccountBalanceWallet,
@@ -254,7 +253,7 @@ export default function ShopPage() {
           ) : (
             <Grid container spacing={3}>
               {filteredItems.map((item) => (
-                <Grid xs={12} sm={6} md={4} key={item.id}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.id}>
                   <Card
                     sx={{
                       height: '100%',
@@ -331,8 +330,8 @@ export default function ShopPage() {
             </Alert>
           ) : (
             <Grid container spacing={2}>
-              {purchases.map((purchase) => (
-                <Grid xs={12} key={purchase.id}>
+                {purchases.map((purchase) => (
+                <Grid size={{ xs: 12 }} key={purchase.id}>
                   <Card>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>

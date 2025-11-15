@@ -1,7 +1,6 @@
 # Backend Dockerfile
 # Railway использует этот файл когда Root Directory = backend
 # ВАЖНО: Railway копирует весь репозиторий в build context (корень проекта)
-# Но Dockerfile находится в backend/, поэтому пути COPY должны быть относительно корня
 FROM node:18-alpine AS builder
 
 WORKDIR /app
@@ -14,7 +13,8 @@ COPY backend/package.json ./backend/
 
 # Устанавливаем зависимости из корня проекта (workspaces)
 # Используем npm install вместо npm ci для workspaces совместимости
-RUN npm install --workspaces --legacy-peer-deps
+# Отключаем postinstall скрипты, так как Prisma schema еще не скопирован
+RUN npm install --workspaces --legacy-peer-deps --ignore-scripts
 
 # Теперь копируем весь код (после установки зависимостей для лучшего кеширования)
 COPY shared ./shared
@@ -22,7 +22,7 @@ COPY backend ./backend
 
 # Генерируем Prisma Client и собираем проект
 WORKDIR /app/backend
-RUN npm run build
+RUN npx prisma generate && npm run build
 
 # Production образ
 FROM node:18-alpine
@@ -35,13 +35,23 @@ COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
 # Устанавливаем только production зависимости
-RUN npm install --workspaces --omit=dev --legacy-peer-deps
+# Отключаем postinstall скрипты, так как Prisma Client уже сгенерирован в builder stage
+RUN npm install --workspaces --omit=dev --legacy-peer-deps --ignore-scripts
 
 # Копируем собранный код
 COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/backend/dist ./backend/dist
 COPY --from=builder /app/backend/prisma ./backend/prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma 2>/dev/null || true
+
+# Копируем Prisma Client и CLI из builder stage
+# Prisma Client находится в node_modules/.prisma и node_modules/@prisma/client
+RUN mkdir -p node_modules/.prisma node_modules/@prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+
+# Копируем Prisma CLI из builder stage для выполнения миграций
+COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
 WORKDIR /app/backend
 

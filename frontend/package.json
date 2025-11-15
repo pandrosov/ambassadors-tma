@@ -18,6 +18,7 @@
     "@mui/x-date-pickers": "^8.18.0",
     "@telegram-apps/sdk": "^1.0.0",
     "axios": "^1.6.2",
+    "dayjs": "^1.11.19",
     "quill": "^2.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -3,7 +3,6 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
   Button,
   Table,
   TableBody,
@@ -19,9 +18,11 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 import { adminApi } from '../../lib/api';
 // Графики временно отключены - требуется установка recharts
 
@@ -58,8 +59,8 @@ interface StatisticsData {
 
 export default function Statistics() {
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string>('');
   const [selectedTaskId, setSelectedTaskId] = useState<string>('');
   const [users, setUsers] = useState<any[]>([]);
@@ -155,8 +156,8 @@ export default function Statistics() {
           Фильтры
         </Typography>
         <Grid container spacing={2}>
-          <Grid xs={12} sm={6} md={3}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Начальная дата"
                 value={startDate}
@@ -165,8 +166,8 @@ export default function Statistics() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid xs={12} sm={6} md={3}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Конечная дата"
                 value={endDate}
@@ -175,7 +176,7 @@ export default function Statistics() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <FormControl fullWidth>
               <InputLabel>Пользователь</InputLabel>
               <Select
@@ -192,7 +193,7 @@ export default function Statistics() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <FormControl fullWidth>
               <InputLabel>Задание</InputLabel>
               <Select
@@ -225,7 +226,7 @@ export default function Statistics() {
       ) : statistics ? (
         <>
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -237,7 +238,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -249,7 +250,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -261,7 +262,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -273,7 +274,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -285,7 +286,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -297,7 +298,7 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>

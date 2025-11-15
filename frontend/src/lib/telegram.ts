@@ -278,7 +278,6 @@ export function requestPhoneNumber(): Promise<string | null> {
       // Это стандартный способ запроса номера телефона в Telegram Mini Apps
       if (tgWebApp.MainButton && tgWebApp.MainButton.setText) {
         const originalText = tgWebApp.MainButton.text || '';
-        const originalVisible = tgWebApp.MainButton.isVisible;
         
         // Настраиваем кнопку для запроса контакта
         tgWebApp.MainButton.setText('Поделиться номером телефона');

@@ -48,6 +48,7 @@ export default function ReportsPage() {
   const [stories, setStories] = useState<Story[]>([]);
   // Legacy поля для обратной совместимости
   const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
+  const [screenshotUrl] = useState('');
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
   const [storyUrl, setStoryUrl] = useState('');
   const [storyReach, setStoryReach] = useState<number | ''>('');

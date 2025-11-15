@@ -17,13 +17,14 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Grid,
   Alert,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { TrendingUp } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 import { adminApi } from '../../lib/api';
 
 interface LeaderboardEntry {
@@ -52,8 +53,8 @@ interface LeaderboardData {
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardData | null>(null);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [selectedTaskId, setSelectedTaskId] = useState<string>('');
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -137,8 +138,8 @@ export default function Leaderboard() {
           Фильтры
         </Typography>
         <Grid container spacing={2}>
-          <Grid xs={12} sm={6} md={4}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Начальная дата"
                 value={startDate}
@@ -147,8 +148,8 @@ export default function Leaderboard() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Конечная дата"
                 value={endDate}
@@ -157,7 +158,7 @@ export default function Leaderboard() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <FormControl fullWidth>
               <InputLabel>Задание</InputLabel>
               <Select
@@ -173,8 +174,8 @@ export default function Leaderboard() {
                 ))}
               </Select>
             </FormControl>
+              </Grid>
           </Grid>
-        </Grid>
       </Paper>
 
       {error && (
@@ -192,7 +193,7 @@ export default function Leaderboard() {
           {/* Топ-3 */}
           <Grid container spacing={2} sx={{ mb: 3 }}>
             {leaderboard.leaderboard.slice(0, 3).map((entry, index) => (
-              <Grid xs={12} md={4} key={entry.userId}>
+              <Grid size={{ xs: 12, md: 4 }} key={entry.userId}>
                 <Card
                   sx={{
                     background: index === 0

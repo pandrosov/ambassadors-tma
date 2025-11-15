@@ -38,6 +38,7 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<number>(0);
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {

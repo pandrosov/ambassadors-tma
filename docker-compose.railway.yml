@@ -1,0 +1,38 @@
+version: '3.8'
+
+# Конфигурация для использования с Railway БД
+# Использование: docker-compose -f docker-compose.railway.yml up
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # ВАЖНО: Установите DATABASE_URL из Railway в .env файле или через переменные окружения
+      # Пример: DATABASE_URL=postgresql://user:password@host.railway.app:5432/railway
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/prisma:/app/backend/prisma
+    command: sh -c "cd /app/backend && npx prisma migrate deploy && node dist/index.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Используйте URL вашего Railway backend
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+      PORT: 80
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+
