@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Chip,
-  TextField,
   Button,
   FormControl,
   InputLabel,
@@ -18,10 +17,10 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Grid,
+  Grid2,
   Alert,
 } from '@mui/material';
-import { EmojiEvents, TrendingUp } from '@mui/icons-material';
+import { TrendingUp } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -137,8 +136,8 @@ export default function Leaderboard() {
         <Typography variant="h6" gutterBottom>
           Фильтры
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={4}>
+        <Grid2 container spacing={2}>
+          <Grid2 xs={12} sm={6} md={4}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Начальная дата"
@@ -147,8 +146,8 @@ export default function Leaderboard() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 xs={12} sm={6} md={4}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Конечная дата"
@@ -157,8 +156,8 @@ export default function Leaderboard() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 xs={12} sm={6} md={4}>
             <FormControl fullWidth>
               <InputLabel>Задание</InputLabel>
               <Select
@@ -174,8 +173,8 @@ export default function Leaderboard() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Paper>
 
       {error && (
@@ -191,9 +190,9 @@ export default function Leaderboard() {
       ) : leaderboard && leaderboard.leaderboard.length > 0 ? (
         <>
           {/* Топ-3 */}
-          <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid2 container spacing={2} sx={{ mb: 3 }}>
             {leaderboard.leaderboard.slice(0, 3).map((entry, index) => (
-              <Grid item xs={12} md={4} key={entry.userId}>
+              <Grid2 xs={12} md={4} key={entry.userId}>
                 <Card
                   sx={{
                     background: index === 0
@@ -243,9 +242,9 @@ export default function Leaderboard() {
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
 
           {/* Полная таблица */}
           <TableContainer component={Paper}>
