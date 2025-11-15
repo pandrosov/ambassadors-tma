@@ -29,11 +29,8 @@ COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 # Копируем конфигурацию nginx
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Railway может использовать переменную PORT, но nginx по умолчанию слушает на 80
-# Если Railway требует другой порт, можно настроить через переменную окружения
-EXPOSE ${PORT:-80}
+# Railway проксирует трафик автоматически, nginx слушает на порту 80
+EXPOSE 80
 
-# Если Railway устанавливает PORT, нужно настроить nginx на этот порт
-# Для этого можно использовать envsubst или просто использовать порт 80
 CMD ["nginx", "-g", "daemon off;"]
 

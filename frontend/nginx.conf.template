@@ -33,4 +33,3 @@ server {
         add_header Expires "0";
     }
 }
-
