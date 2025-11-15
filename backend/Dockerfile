@@ -29,9 +29,11 @@ RUN npx prisma generate && npm run build
 # Production образ
 FROM node:18-alpine
 
-# Устанавливаем OpenSSL для Prisma
+# Устанавливаем OpenSSL 1.1 для Prisma из edge репозитория
 # Prisma требует libssl.so.1.1 для работы в Alpine Linux
-RUN apk add --no-cache openssl1.1-compat
+# В Alpine 3.21 openssl1.1-compat доступен только в edge репозитории
+RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+    apk add --no-cache openssl1.1-compat@edge
 
 WORKDIR /app
 
