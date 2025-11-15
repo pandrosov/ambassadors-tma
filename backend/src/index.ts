@@ -100,6 +100,33 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Database health check
+app.get('/health/db', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    const tables = await prisma.$queryRaw<Array<{ table_name: string }>>`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public' 
+      AND table_type = 'BASE TABLE'
+      ORDER BY table_name
+    `;
+    res.json({ 
+      status: 'ok', 
+      database: 'connected',
+      tables: tables.map(t => t.table_name),
+      timestamp: new Date().toISOString() 
+    });
+  } catch (error: any) {
+    res.status(500).json({ 
+      status: 'error', 
+      database: 'disconnected',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
