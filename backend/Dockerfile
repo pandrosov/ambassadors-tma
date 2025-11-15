@@ -1,9 +1,13 @@
 # Backend Dockerfile
+# Railway использует этот файл когда Root Directory = backend
+# Важно: Railway копирует весь репозиторий в build context, но рабочая директория = backend
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Копируем package.json и package-lock.json из корня для workspaces
+# Railway копирует весь репозиторий, поэтому build context = корень проекта
+# Но мы находимся в backend/, поэтому нужно копировать относительно корня
+# Копируем package.json из корня проекта
 COPY package*.json ./
 COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
@@ -46,4 +50,3 @@ WORKDIR /app/backend
 EXPOSE ${PORT:-3000}
 
 CMD ["node", "dist/index.js"]
-
