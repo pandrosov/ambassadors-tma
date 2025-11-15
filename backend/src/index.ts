@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:5173',
+    /\.railway\.app$/,
+    /\.up\.railway\.app$/,
     /\.trycloudflare\.com$/,
     /\.ngrok-free\.app$/,
     /\.ngrok\.app$/,

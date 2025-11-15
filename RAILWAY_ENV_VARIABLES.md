@@ -70,7 +70,8 @@ NODE_ENV=production
    - `TELEGRAM_BOT_TOKEN` - получите у [@BotFather](https://t.me/BotFather) в Telegram
    - `JWT_SECRET` - сгенерируйте случайную строку (минимум 32 символа)
    - `NODE_ENV=production`
-   - `FRONTEND_URL` - URL вашего фронтенд сервиса (например: `https://ambassadors-frontend.railway.app`)
+   - `FRONTEND_URL` - URL вашего фронтенд сервиса (например: `https://amb-frontend-production.up.railway.app`)
+     - ⚠️ **ВАЖНО:** Укажите точный URL фронтенда, включая поддомен и домен Railway
 
 ### 2. Frontend сервис:
 
