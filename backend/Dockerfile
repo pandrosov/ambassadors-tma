@@ -51,9 +51,10 @@ RUN mkdir -p node_modules/.prisma node_modules/@prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
 
-# Копируем Prisma CLI из builder stage для выполнения миграций
+# Копируем Prisma CLI и engines из builder stage для выполнения миграций
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 WORKDIR /app/backend
 
