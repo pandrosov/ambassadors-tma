@@ -32,11 +32,27 @@ export default function AdminRoute({ children }: AdminRouteProps) {
           if (env?.VITE_API_URL) {
             return env.VITE_API_URL;
           }
+          
+          // Production на Railway
+          const currentHost = window.location.hostname;
+          if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
+            let backendUrl = window.location.origin.replace('frontend', 'backend');
+            if (backendUrl === window.location.origin) {
+              const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
+              if (match) {
+                const [, serviceName, , rest] = match;
+                backendUrl = `https://${serviceName}-backend${rest}`;
+              } else {
+                backendUrl = 'https://ambassadors-tma-production.up.railway.app';
+              }
+            }
+            return backendUrl;
+          }
+          
           const savedBackendUrl = localStorage.getItem('backend_api_url');
           if (savedBackendUrl) {
             return savedBackendUrl;
           }
-          const currentHost = window.location.hostname;
           if (currentHost.includes('trycloudflare.com')) {
             return 'https://celebrities-lopez-got-left.trycloudflare.com';
           }

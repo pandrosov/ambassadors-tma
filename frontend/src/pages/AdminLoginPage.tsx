@@ -25,11 +25,27 @@ export default function AdminLoginPage() {
           if (env?.VITE_API_URL) {
             return env.VITE_API_URL;
           }
+          
+          // Production на Railway
+          const currentHost = window.location.hostname;
+          if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
+            let backendUrl = window.location.origin.replace('frontend', 'backend');
+            if (backendUrl === window.location.origin) {
+              const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
+              if (match) {
+                const [, serviceName, , rest] = match;
+                backendUrl = `https://${serviceName}-backend${rest}`;
+              } else {
+                backendUrl = 'https://ambassadors-tma-production.up.railway.app';
+              }
+            }
+            return backendUrl;
+          }
+          
           const savedBackendUrl = localStorage.getItem('backend_api_url');
           if (savedBackendUrl) {
             return savedBackendUrl;
           }
-          const currentHost = window.location.hostname;
           if (currentHost.includes('trycloudflare.com')) {
             return 'https://celebrities-lopez-got-left.trycloudflare.com';
           }
@@ -74,16 +90,30 @@ export default function AdminLoginPage() {
           return env.VITE_API_URL;
         }
         
-        // Приоритет 2: localStorage (сохраненный URL)
+        // Приоритет 2: Production на Railway
+        const currentHost = window.location.hostname;
+        if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
+          let backendUrl = window.location.origin.replace('frontend', 'backend');
+          if (backendUrl === window.location.origin) {
+            const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
+            if (match) {
+              const [, serviceName, , rest] = match;
+              backendUrl = `https://${serviceName}-backend${rest}`;
+            } else {
+              backendUrl = 'https://ambassadors-tma-production.up.railway.app';
+            }
+          }
+          return backendUrl;
+        }
+        
+        // Приоритет 3: localStorage (сохраненный URL)
         const savedBackendUrl = localStorage.getItem('backend_api_url');
         if (savedBackendUrl) {
           return savedBackendUrl;
         }
         
-        // Приоритет 3: Если это Cloudflare домен, используем backend туннель
-        const currentHost = window.location.hostname;
+        // Приоритет 4: Если это Cloudflare домен, используем backend туннель
         if (currentHost.includes('trycloudflare.com')) {
-          // Последний известный backend URL
           return 'https://celebrities-lopez-got-left.trycloudflare.com';
         }
         
