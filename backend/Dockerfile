@@ -59,6 +59,8 @@ WORKDIR /app/backend
 
 # Railway автоматически устанавливает PORT через переменную окружения
 # Приложение использует process.env.PORT || 3000
-EXPOSE ${PORT:-3000}
+EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+# Запускаем миграции Prisma перед запуском приложения
+# Railway автоматически устанавливает DATABASE_URL
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
