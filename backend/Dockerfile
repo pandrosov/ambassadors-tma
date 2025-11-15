@@ -1,12 +1,13 @@
 # Backend Dockerfile
 # Railway использует этот файл когда Root Directory = backend
-# Важно: Railway копирует весь репозиторий в build context, но рабочая директория = backend
+# ВАЖНО: Когда Root Directory = backend, Railway использует build context = корень репозитория
+# Но Dockerfile находится в backend/, поэтому пути COPY должны быть относительно корня репозитория
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Railway копирует весь репозиторий, поэтому build context = корень проекта
-# Но мы находимся в backend/, поэтому нужно копировать относительно корня
+# Railway копирует весь репозиторий в build context (корень проекта)
+# Поэтому пути COPY должны быть относительно корня репозитория
 # Копируем package.json из корня проекта
 COPY package*.json ./
 COPY shared/package.json ./shared/
