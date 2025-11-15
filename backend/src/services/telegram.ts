@@ -1,5 +1,5 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 
 let bot: TelegramBot | null = null;
 
@@ -141,7 +141,7 @@ export async function sendReportReminder() {
             where: { status: 'ACTIVE', role: 'AMBASSADOR' },
             select: { id: true },
           })).map(u => u.id)
-        : task.assignments.filter(a => a.user && a.user.status === 'ACTIVE').map(a => a.user.id).filter(Boolean);
+        : task.assignments.filter((a: any) => a.user && a.user.status === 'ACTIVE').map((a: any) => a.user.id).filter(Boolean);
 
       for (const userId of userIds) {
         // Проверяем, есть ли уже отчет за эту неделю

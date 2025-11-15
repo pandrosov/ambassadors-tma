@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma';
-import { updateReportStatsInSheets } from './sheets';
+import { prisma } from '../lib/prisma.js';
+import { updateReportStatsInSheets } from './sheets.js';
 
 /**
  * Интерфейс для статистики из соцсетей
