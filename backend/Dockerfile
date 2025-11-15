@@ -52,8 +52,10 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
 
 # Копируем Prisma CLI и engines из builder stage для выполнения миграций
+# @prisma/engines нужен для работы Prisma CLI
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+# Копируем всю директорию @prisma со всеми подмодулями (включая engines)
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 WORKDIR /app/backend
