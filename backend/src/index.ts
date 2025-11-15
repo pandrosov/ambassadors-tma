@@ -32,20 +32,57 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-// Middleware
-app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:5173',
-    /\.railway\.app$/,
-    /\.up\.railway\.app$/,
-    /\.trycloudflare\.com$/,
-    /\.ngrok-free\.app$/,
-    /\.ngrok\.app$/,
-  ],
+// CORS configuration
+const corsOptions = {
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+    // Разрешаем запросы без origin (например, мобильные приложения или Postman)
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const allowedOrigins = [
+      process.env.FRONTEND_URL || 'http://localhost:5173',
+      /\.railway\.app$/,
+      /\.up\.railway\.app$/,
+      /\.trycloudflare\.com$/,
+      /\.ngrok-free\.app$/,
+      /\.ngrok\.app$/,
+    ];
+
+    // Проверяем точное совпадение или регулярные выражения
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (typeof allowed === 'string') {
+        return origin === allowed;
+      } else if (allowed instanceof RegExp) {
+        return allowed.test(origin);
+      }
+      return false;
+    });
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS: Origin ${origin} not allowed`);
+      callback(null, true); // Разрешаем для отладки, в production можно вернуть ошибку
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Telegram-Init-Data', 'X-Telegram-Id'],
-}));
+  exposedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400, // 24 часа
+};
+
+// Middleware
+app.use(cors(corsOptions));
+
+// Логирование CORS для отладки
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log(`[CORS] Preflight request from ${req.headers.origin}`);
+  }
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
