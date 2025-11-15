@@ -137,6 +137,7 @@ router.post('/admin/login', async (req, res) => {
 // Проверка токена
 router.get('/admin/me', async (req, res) => {
   try {
+    console.log('[Admin /me] Request received');
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       console.log('[Admin /me] No authorization header');
@@ -144,9 +145,11 @@ router.get('/admin/me', async (req, res) => {
     }
 
     const token = authHeader.substring(7);
+    console.log('[Admin /me] Token extracted, length:', token.length);
     console.log('[Admin /me] Verifying token...');
     
     const payload = verifyToken(token);
+    console.log('[Admin /me] Token verification result:', payload ? 'success' : 'failed');
 
     if (!payload) {
       console.log('[Admin /me] Invalid token');
@@ -155,6 +158,7 @@ router.get('/admin/me', async (req, res) => {
 
     console.log('[Admin /me] Token verified, userId:', payload.userId);
 
+    console.log('[Admin /me] Querying database for user:', payload.userId);
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
       select: {
@@ -167,13 +171,15 @@ router.get('/admin/me', async (req, res) => {
       },
     });
 
+    console.log('[Admin /me] Database query result:', user ? 'user found' : 'user not found');
+
     if (!user) {
       console.log('[Admin /me] User not found, userId:', payload.userId);
       return res.status(401).json({ error: 'User not found' });
     }
 
     if (user.status !== 'ACTIVE') {
-      console.log('[Admin /me] User not active, userId:', payload.userId);
+      console.log('[Admin /me] User not active, userId:', payload.userId, 'status:', user.status);
       return res.status(403).json({ error: 'Account is not active' });
     }
 
@@ -187,10 +193,12 @@ router.get('/admin/me', async (req, res) => {
     });
   } catch (error: any) {
     console.error('[Admin /me] Error:', error);
-    console.error('[Admin /me] Error stack:', error.stack);
+    console.error('[Admin /me] Error name:', error?.name);
+    console.error('[Admin /me] Error message:', error?.message);
+    console.error('[Admin /me] Error stack:', error?.stack);
     res.status(500).json({ 
       error: 'Failed to get user',
-      message: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: error?.message || 'Unknown error'
     });
   }
 });
