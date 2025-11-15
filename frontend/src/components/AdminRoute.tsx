@@ -36,17 +36,8 @@ export default function AdminRoute({ children }: AdminRouteProps) {
           // Production на Railway
           const currentHost = window.location.hostname;
           if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
-            let backendUrl = window.location.origin.replace('frontend', 'backend');
-            if (backendUrl === window.location.origin) {
-              const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
-              if (match) {
-                const [, serviceName, , rest] = match;
-                backendUrl = `https://${serviceName}-backend${rest}`;
-              } else {
-                backendUrl = 'https://ambassadors-tma-production.up.railway.app';
-              }
-            }
-            return backendUrl;
+            // Используем фиксированный URL бэкенда
+            return 'https://ambassadors-tma-production.up.railway.app';
           }
           
           const savedBackendUrl = localStorage.getItem('backend_api_url');

@@ -15,26 +15,9 @@ const getApiUrl = () => {
   const isProduction = currentHost.includes('railway.app') || currentHost.includes('up.railway.app');
   
   if (isProduction) {
-    // На Railway фронтенд и бэкенд обычно на разных поддоменах
-    // Пытаемся определить URL бэкенда из текущего домена
-    // Например: amb-frontend-production.up.railway.app -> amb-backend-production.up.railway.app
-    // Или используем общий домен: ambassadors-tma-production.up.railway.app
-    
-    // Вариант 1: Заменить frontend на backend в домене
-    let backendUrl = window.location.origin.replace('frontend', 'backend');
-    
-    // Вариант 2: Если не сработало, используем основной домен Railway
-    if (backendUrl === window.location.origin) {
-      // Пытаемся извлечь основной домен
-      const match = currentHost.match(/^([^.]+)-(frontend|web|app)(.*)$/);
-      if (match) {
-        const [, serviceName, , rest] = match;
-        backendUrl = `https://${serviceName}-backend${rest}`;
-      } else {
-        // Fallback: используем основной production домен
-        backendUrl = 'https://ambassadors-tma-production.up.railway.app';
-      }
-    }
+    // На Railway используем фиксированный URL бэкенда
+    // Реальный URL бэкенда: ambassadors-tma-production.up.railway.app
+    const backendUrl = 'https://ambassadors-tma-production.up.railway.app';
     
     console.log('Production mode detected. Using backend URL:', backendUrl);
     console.warn('⚠️ Для production рекомендуется установить VITE_API_URL в Railway Variables');
