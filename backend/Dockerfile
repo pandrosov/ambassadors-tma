@@ -40,7 +40,9 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 WORKDIR /app/backend
 
-EXPOSE 3000
+# Railway автоматически устанавливает PORT через переменную окружения
+# Приложение использует process.env.PORT || 3000
+EXPOSE ${PORT:-3000}
 
 CMD ["node", "dist/index.js"]
 
