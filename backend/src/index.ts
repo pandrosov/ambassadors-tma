@@ -42,8 +42,16 @@ const corsOptions = {
       return callback(null, true);
     }
 
+    // Нормализуем FRONTEND_URL (добавляем https:// если отсутствует)
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const normalizedFrontendUrl = frontendUrl.startsWith('http') 
+      ? frontendUrl 
+      : `https://${frontendUrl}`;
+
     const allowedOrigins = [
-      process.env.FRONTEND_URL || 'http://localhost:5173',
+      normalizedFrontendUrl,
+      frontendUrl, // Также проверяем оригинальный URL на случай если уже с протоколом
+      'http://localhost:5173',
       /\.railway\.app$/,
       /\.up\.railway\.app$/,
       /\.trycloudflare\.com$/,
