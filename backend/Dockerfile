@@ -9,7 +9,8 @@ COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
 # Устанавливаем зависимости из корня проекта (workspaces)
-RUN npm install --workspaces
+# Используем npm install вместо npm ci для workspaces совместимости
+RUN npm install --workspaces --legacy-peer-deps
 
 # Копируем весь код
 COPY shared ./shared
@@ -30,7 +31,7 @@ COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
 # Устанавливаем только production зависимости
-RUN npm install --workspaces --omit=dev
+RUN npm install --workspaces --omit=dev --legacy-peer-deps
 
 # Копируем собранный код
 COPY --from=builder /app/shared ./shared

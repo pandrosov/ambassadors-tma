@@ -3,13 +3,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Копируем package.json из корня для workspaces
+# Копируем package.json и package-lock.json из корня для workspaces
 COPY package*.json ./
 COPY shared/package.json ./shared/
 COPY frontend/package.json ./frontend/
 
 # Устанавливаем зависимости из корня проекта (workspaces)
-RUN npm install --workspaces
+# Используем npm install вместо npm ci для workspaces совместимости
+RUN npm install --workspaces --legacy-peer-deps
 
 # Копируем весь код
 COPY shared ./shared
