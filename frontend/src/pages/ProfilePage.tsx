@@ -306,8 +306,8 @@ export default function ProfilePage() {
             )}
           </Box>
 
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+          <Grid2 container spacing={3}>
+            <Grid2 xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Телефон"
@@ -318,8 +318,8 @@ export default function ProfilePage() {
                   startAdornment: <Phone sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid2>
+            <Grid2 xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Email"
@@ -331,8 +331,8 @@ export default function ProfilePage() {
                   startAdornment: <Email sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="Ближайший ПВЗ СДЭК"
@@ -343,8 +343,8 @@ export default function ProfilePage() {
                   startAdornment: <LocationOn sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="Адрес проживания"
@@ -355,8 +355,8 @@ export default function ProfilePage() {
                   startAdornment: <LocationOn sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </CardContent>
       </Card>
 
