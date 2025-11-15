@@ -36,27 +36,24 @@ COPY package*.json ./
 COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
-# Устанавливаем только production зависимости
-# Отключаем postinstall скрипты, так как Prisma Client уже сгенерирован в builder stage
-RUN npm install --workspaces --omit=dev --legacy-peer-deps --ignore-scripts
-
 # Копируем собранный код
 COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/backend/dist ./backend/dist
 COPY --from=builder /app/backend/prisma ./backend/prisma
 
-# Копируем Prisma Client и CLI из builder stage
-# Prisma Client находится в node_modules/.prisma и node_modules/@prisma/client
+# Копируем Prisma Client и CLI из builder stage ПЕРЕД установкой production зависимостей
+# Это гарантирует, что @prisma/engines не будет удален
 RUN mkdir -p node_modules/.prisma node_modules/@prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
-
-# Копируем Prisma CLI и engines из builder stage для выполнения миграций
-# @prisma/engines нужен для работы Prisma CLI
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-# Копируем всю директорию @prisma со всеми подмодулями (включая engines)
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
+# Устанавливаем только production зависимости
+# Отключаем postinstall скрипты, так как Prisma Client уже сгенерирован в builder stage
+# Используем --no-audit для ускорения и --prefer-offline для использования кеша
+RUN npm install --workspaces --omit=dev --legacy-peer-deps --ignore-scripts --no-audit --prefer-offline
 
 WORKDIR /app/backend
 
