@@ -13,7 +13,9 @@ Railway может автоматически определять способ 
 ### Для Frontend сервиса:
 1. Откройте сервис в Railway Dashboard
 2. Перейдите в **Settings** → **Build & Deploy**
-3. Убедитесь, что выбран **Dockerfile** (не Nixpacks)
+3. Убедитесь, что выбран **Dockerfile** (не Railpack/Nixpacks)
+4. Если видите "Railpack" - Railway должен автоматически переключиться на Dockerfile после следующего деплоя
+5. **Важно**: Root Directory должен быть `.` (точка - корень проекта), чтобы Railway нашел корневой Dockerfile
 
 ---
 
