@@ -1,0 +1,598 @@
+.admin-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.admin-header {
+  margin-bottom: 1.5rem;
+}
+
+.admin-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+}
+
+.admin-tab {
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--tg-theme-hint-color, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.admin-tab.active {
+  color: var(--tg-theme-button-color, #3390ec);
+  border-bottom-color: var(--tg-theme-button-color, #3390ec);
+}
+
+.admin-content {
+  min-height: 400px;
+}
+
+/* Модерация пользователей */
+.users-moderation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.moderation-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.filter-select {
+  padding: 0.75rem;
+  border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.user-card {
+  padding: 1rem;
+  background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.user-card:active {
+  opacity: 0.7;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.user-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-suspended {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-inactive {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--tg-theme-bg-color, #ffffff);
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--tg-theme-hint-color, #666);
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.user-detail-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.user-detail-section p {
+  font-size: 0.875rem;
+  color: var(--tg-theme-hint-color, #666);
+  margin: 0.25rem 0;
+}
+
+.status-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+}
+
+/* Управление тегами */
+.tags-management,
+.broadcasts-management {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tags-header,
+.broadcasts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tags-header h2,
+.broadcasts-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.create-button {
+  padding: 0.5rem 1rem;
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #ffffff);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.create-button:active {
+  opacity: 0.8;
+}
+
+.tags-list,
+.broadcasts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tag-card,
+.broadcast-card {
+  padding: 1rem;
+  background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tag-color {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+}
+
+.tag-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tag-name {
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.tag-description {
+  font-size: 0.875rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.tag-count {
+  font-size: 0.75rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.delete-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.delete-button:active {
+  opacity: 0.8;
+}
+
+/* Формы */
+.create-tag-form,
+.create-broadcast-form {
+  padding: 1.5rem;
+  background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.create-tag-form h3,
+.create-broadcast-form h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+  font-family: inherit;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.color-input {
+  width: 100px;
+  height: 40px;
+  border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--tg-theme-hint-color, #666);
+  margin-top: 0.25rem;
+}
+
+.tags-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.tag-label {
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid;
+  border-radius: 0.25rem;
+  background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.cancel-button,
+.save-button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: var(--tg-theme-secondary-bg-color, #f1f1f1);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.save-button {
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.broadcast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.broadcast-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.broadcast-date {
+  font-size: 0.75rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.broadcast-message {
+  font-size: 0.875rem;
+  color: var(--tg-theme-text-color, #000000);
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+}
+
+.broadcast-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.access-denied {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.access-denied h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.access-denied p {
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+.user-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.user-tag {
+  padding: 0.25rem 0.75rem;
+  border-left: 3px solid;
+  border-radius: 0.25rem;
+  background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+  font-size: 0.875rem;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.user-detail-section a {
+  color: var(--tg-theme-button-color, #3390ec);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.user-detail-section a:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--tg-theme-hint-color, #666);
+}
+
+/* Стили для ReactQuill */
+.ql-container {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--tg-theme-text-color, #000000);
+  background: var(--tg-theme-bg-color, #ffffff);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.ql-editor {
+  min-height: 150px;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--tg-theme-hint-color, #999999);
+  font-style: normal;
+}
+
+.ql-toolbar {
+  background: var(--tg-theme-secondary-bg-color, #f1f1f1);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-color: var(--tg-theme-secondary-bg-color, #e0e0e0);
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: var(--tg-theme-text-color, #000000);
+}
+
+.ql-toolbar .ql-fill {
+  fill: var(--tg-theme-text-color, #000000);
+}
+
+.ql-toolbar button:hover,
+.ql-toolbar button.ql-active {
+  color: var(--tg-theme-button-color, #3390ec);
+}
+
+.ql-toolbar button:hover .ql-stroke,
+.ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--tg-theme-button-color, #3390ec);
+}
+
+.ql-toolbar button:hover .ql-fill,
+.ql-toolbar button.ql-active .ql-fill {
+  fill: var(--tg-theme-button-color, #3390ec);
+}
+
+.ql-snow .ql-picker {
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.ql-snow .ql-picker-options {
+  background: var(--tg-theme-bg-color, #ffffff);
+  border-color: var(--tg-theme-secondary-bg-color, #e0e0e0);
+}
+

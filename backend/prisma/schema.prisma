@@ -1,0 +1,413 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  AMBASSADOR
+  MANAGER
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING      // Ожидает модерации
+  ACTIVE       // Активен (прошел модерацию)
+  INACTIVE     // Неактивен
+  SUSPENDED    // Заблокирован
+}
+
+enum TaskType {
+  GENERAL
+  PERSONAL
+}
+
+enum TaskStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ReportType {
+  VIDEO_LINK
+  STORY_SCREENSHOT
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum FlarikiTransactionType {
+  EARNED
+  SPENT
+  BONUS
+  PENALTY
+}
+
+model User {
+  id            String   @id @default(cuid())
+  telegramId    Int      @unique
+  username      String?
+  firstName     String?
+  lastName      String?
+  phone         String?
+  email         String?
+  passwordHash  String?  // Для JWT аутентификации админ-панели
+  role          UserRole @default(AMBASSADOR)
+  status        UserStatus @default(PENDING)  // По умолчанию ожидает модерации
+  
+  // Данные амбассадора
+  cdekPvz       String?  // Ближайший ПВЗ СДЭК
+  address       String?  // Адрес проживания
+  instagramLink String?
+  youtubeLink   String?
+  tiktokLink    String?
+  vkLink        String?
+  
+  // Баланс флариков
+  flarikiBalance Int     @default(0)
+  
+  // Модерация
+  moderatedAt   DateTime?  // Дата модерации
+  moderatedById  String?   // Кто провел модерацию
+  moderatedBy    User?     @relation("UserModerator", fields: [moderatedById], references: [id])
+  moderatedUsers User[]    @relation("UserModerator")
+  
+  // Теги
+  tags          UserTag[]
+  
+  // Связи
+  tasks         TaskAssignment[]
+  reports       Report[]
+  transactions  FlarikiTransaction[]
+  createdTasks  Task[]   @relation("TaskCreator")
+  reviewedReports Report[] @relation("ReportReviewer")
+  createdBroadcasts Broadcast[] @relation("BroadcastCreator")
+  auditLogs     AuditLog[] @relation("AuditLogUser")
+  purchases     Purchase[]  // Покупки в магазине
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([telegramId])
+  @@index([status])
+  @@index([moderatedById])
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  color       String?  // Цвет тега для отображения
+  description String?
+  users       UserTag[]
+  createdAt   DateTime @default(now())
+  
+  @@index([name])
+}
+
+model UserTag {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tagId     String
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, tagId])
+  @@index([userId])
+  @@index([tagId])
+}
+
+model Task {
+  id            String   @id @default(cuid())
+  title         String
+  description   String   @db.Text
+  type          TaskType
+  status        TaskStatus @default(DRAFT)
+  
+  // Для персональных заданий
+  assignments   TaskAssignment[]
+  
+  // Метаданные
+  requirements  String?  @db.Text
+  deadline      DateTime?
+  rewardFlariki Int?     // Награда в флариках
+  publishedAt   DateTime?  // Дата публикации в бота
+  publishedById String?   // Кто опубликовал
+  
+  createdById   String
+  createdBy     User     @relation("TaskCreator", fields: [createdById], references: [id])
+  
+  reports       Report[]
+  transactions  FlarikiTransaction[]
+  broadcasts    BroadcastTask[]  // Привязка к рассылкам
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([createdById])
+  @@index([publishedAt])
+}
+
+model TaskAssignment {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedAt DateTime @default(now())
+  
+  @@unique([taskId, userId])
+  @@index([userId])
+  @@index([taskId])
+}
+
+model Report {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  taskId        String
+  task          Task     @relation(fields: [taskId], references: [id])
+  
+  type          ReportType
+  status        ReportStatus @default(PENDING)
+  
+  // Данные отчета - теперь поддерживаем несколько ссылок
+  videoLinks    ReportLink[]  // Множественные ссылки на ролики
+  
+  // Для Instagram сторис (теперь поддерживаем несколько сторис)
+  stories       ReportStory[]  // Массив сторис
+  
+  // Legacy поля для обратной совместимости
+  screenshotUrl String?  // URL скриншота охвата (legacy)
+  screenshotFile String? // Путь к загруженному файлу скриншота (legacy)
+  storyUrl      String?  // Ссылка на сторис в Instagram (legacy)
+  storyReach    Int?     // Количество просмотров сторис (legacy)
+  
+  // Статистика (заполняется парсером, legacy - используйте статистику из ReportLink)
+  views         Int?
+  likes         Int?
+  comments      Int?
+  reach         Int?     // Охват для сторис (legacy)
+  
+  // Связь с товарами
+  products      ReportProduct[]  // Товары, связанные с отчетом
+  
+  // Метаданные
+  submittedAt   DateTime @default(now())
+  reviewedAt    DateTime?
+  reviewedById  String?
+  reviewedBy    User?    @relation("ReportReviewer", fields: [reviewedById], references: [id])
+  notes         String?  @db.Text
+  rejectionReason String? @db.Text  // Причина отклонения отчета
+  
+  // Связи
+  transactions  FlarikiTransaction[]
+  sheetsSyncs   SheetsSync[]
+  
+  @@index([userId])
+  @@index([taskId])
+  @@index([status])
+  @@index([submittedAt])
+}
+
+model ReportLink {
+  id        String   @id @default(cuid())
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  url       String   // URL ссылки
+  platform  String?  // Платформа (youtube, tiktok, instagram и т.д.)
+  order     Int      @default(0)  // Порядок отображения
+  
+  // Статистика видео (заполняется парсером или вручную)
+  views     Int?     @default(0)  // Количество просмотров
+  likes     Int?     @default(0)  // Количество лайков
+  comments  Int?     @default(0)  // Количество комментариев
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  
+  @@index([reportId])
+}
+
+model Broadcast {
+  id          String   @id @default(cuid())
+  title       String
+  message     String   @db.Text
+  tagIds      String[] // Массив ID тегов для фильтрации
+  taskIds     String[] // Массив ID заданий, прикрепленных к рассылке
+  sentCount   Int      @default(0)
+  createdById String
+  createdBy   User     @relation("BroadcastCreator", fields: [createdById], references: [id])
+  sentAt      DateTime?
+  createdAt   DateTime @default(now())
+  
+  tasks       BroadcastTask[]  // Связь с заданиями
+  
+  @@index([createdById])
+  @@index([createdAt])
+}
+
+model BroadcastTask {
+  id          String   @id @default(cuid())
+  broadcastId String
+  broadcast   Broadcast @relation(fields: [broadcastId], references: [id], onDelete: Cascade)
+  taskId      String
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  
+  @@unique([broadcastId, taskId])
+  @@index([broadcastId])
+  @@index([taskId])
+}
+
+model FlarikiTransaction {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  type          FlarikiTransactionType
+  amount        Int      // Может быть отрицательным для списаний
+  reason        String   @db.Text
+  taskId        String?
+  task          Task?    @relation(fields: [taskId], references: [id])
+  reportId      String?
+  report        Report?  @relation(fields: [reportId], references: [id])
+  createdAt     DateTime @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model SheetsSync {
+  id            String   @id @default(cuid())
+  reportId      String
+  report        Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  sheetId       String   // ID Google Sheet
+  rowNumber     Int
+  syncedAt      DateTime @default(now())
+  
+  @@index([reportId])
+  @@index([sheetId])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  action      String   // Тип действия (TASK_CREATED, TASK_PUBLISHED, REPORT_MODERATED, BROADCAST_SENT и т.д.)
+  entityType  String   // Тип сущности (Task, Report, User, Broadcast)
+  entityId    String?  // ID сущности
+  userId      String   // Кто выполнил действие
+  user        User     @relation("AuditLogUser", fields: [userId], references: [id])
+  details     Json?    // Дополнительные детали в JSON формате
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}
+
+// Модель для Instagram сторис (поддержка нескольких сторис в одном отчете)
+model ReportStory {
+  id          String   @id @default(cuid())
+  reportId    String
+  report      Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  storyUrl    String   // Ссылка на сторис в Instagram
+  screenshotFile String? // Путь к загруженному файлу скриншота
+  screenshotUrl String?  // URL скриншота (legacy)
+  reach       Int?     // Количество просмотров сторис (охват)
+  order       Int      @default(0)  // Порядок отображения
+  createdAt   DateTime @default(now())
+  
+  @@index([reportId])
+}
+
+// Модель для товаров (справочник товаров)
+model Product {
+  id          String   @id @default(cuid())
+  name        String   // Название товара
+  description String?  @db.Text  // Описание товара
+  imageUrl    String?  // URL изображения товара
+  isActive    Boolean  @default(true)  // Активен ли товар
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Связи
+  reportProducts ReportProduct[]
+  
+  @@index([isActive])
+}
+
+// Связь между отчетами и товарами (many-to-many)
+model ReportProduct {
+  id        String   @id @default(cuid())
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)  // Количество товара
+  createdAt DateTime @default(now())
+  
+  @@unique([reportId, productId])
+  @@index([reportId])
+  @@index([productId])
+}
+
+// Модель для магазина подарков
+model ShopItem {
+  id          String   @id @default(cuid())
+  name        String   // Название подарка
+  description String?  @db.Text  // Описание подарка
+  imageUrl    String?  // URL изображения подарка
+  price       Int      // Цена в флариках
+  stock       Int?     // Количество в наличии (null = неограничено)
+  isActive    Boolean  @default(true)  // Активен ли товар в магазине
+  category    String?  // Категория (например, "косметика", "аксессуары" и т.д.)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Связи
+  purchases   Purchase[]
+  
+  @@index([isActive])
+  @@index([category])
+}
+
+// Модель для покупок в магазине
+model Purchase {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  shopItemId  String
+  shopItem    ShopItem @relation(fields: [shopItemId], references: [id])
+  quantity    Int      @default(1)  // Количество купленных единиц
+  totalPrice  Int      // Общая стоимость в флариках
+  status      PurchaseStatus @default(PENDING)  // Статус заказа
+  notes       String?  @db.Text  // Примечания к заказу
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([shopItemId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum PurchaseStatus {
+  PENDING     // Ожидает обработки
+  PROCESSING  // В обработке
+  SHIPPED     // Отправлен
+  DELIVERED   // Доставлен
+  CANCELLED   // Отменен
+}
+

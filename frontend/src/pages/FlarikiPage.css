@@ -1,0 +1,111 @@
+.flariki-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  color: white;
+}
+
+.balance-icon {
+  font-size: 48px;
+}
+
+.balance-content {
+  flex: 1;
+}
+
+.balance-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.balance-value {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.transactions-section {
+  margin-top: 24px;
+}
+
+.transactions-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction-item {
+  background-color: var(--tg-theme-secondary-bg-color, #f1f1f1);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.transaction-type {
+  font-size: 24px;
+}
+
+.transaction-amount {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.transaction-amount .positive {
+  color: #4caf50;
+}
+
+.transaction-amount .negative {
+  color: #f44336;
+}
+
+.transaction-reason {
+  font-size: 14px;
+  color: var(--tg-theme-text-color, #000000);
+  margin-bottom: 8px;
+}
+
+.transaction-task {
+  font-size: 12px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-bottom: 8px;
+}
+
+.transaction-date {
+  font-size: 12px;
+  color: var(--tg-theme-hint-color, #999999);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--tg-theme-hint-color, #999999);
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--tg-theme-hint-color, #999999);
+}
+
