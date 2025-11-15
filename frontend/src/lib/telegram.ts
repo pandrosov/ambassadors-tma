@@ -69,14 +69,16 @@ export function initTelegramWebApp() {
     tg.expand();
     
     // Настраиваем тему
-    if (tg.themeParams?.bg_color) {
+    if (tg.themeParams?.bg_color && tg.setHeaderColor && tg.setBackgroundColor) {
       tg.setHeaderColor(tg.themeParams.bg_color);
       tg.setBackgroundColor(tg.themeParams.bg_color);
     }
     
     // Включаем подтверждение закрытия (если поддерживается)
     try {
-      tg.enableClosingConfirmation();
+      if (tg.enableClosingConfirmation) {
+        tg.enableClosingConfirmation();
+      }
     } catch (e) {
       // Игнорируем ошибку, если не поддерживается
     }
@@ -131,8 +133,8 @@ export function getInitData(): string | null {
     
     // Fallback на SDK (если используется)
     try {
-      const { retrieveLaunchParams } = require('@telegram-apps/sdk');
-      const launchParams = retrieveLaunchParams();
+      const sdk = await import('@telegram-apps/sdk');
+      const launchParams = sdk.retrieveLaunchParams();
       if (launchParams.initDataRaw) {
         console.log('Got initData from SDK');
         return launchParams.initDataRaw;
@@ -198,8 +200,8 @@ export function getTelegramUser() {
     
     // Fallback на SDK (если используется)
     try {
-      const { retrieveLaunchParams } = require('@telegram-apps/sdk');
-      const launchParams = retrieveLaunchParams();
+      const sdk = await import('@telegram-apps/sdk');
+      const launchParams = sdk.retrieveLaunchParams();
       if (launchParams.initData?.user) {
         console.log('Got user from SDK:', launchParams.initData.user);
         return launchParams.initData.user;

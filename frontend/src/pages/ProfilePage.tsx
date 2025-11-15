@@ -9,7 +9,8 @@ import {
   Button,
   Avatar,
   Chip,
-  Grid2,
+  Grid,
+  CircularProgress,
 } from '@mui/material';
 import {
   Edit,
@@ -306,8 +307,8 @@ export default function ProfilePage() {
             )}
           </Box>
 
-          <Grid2 container spacing={3}>
-            <Grid2 xs={12} sm={6}>
+          <Grid container spacing={3}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Телефон"
@@ -355,8 +356,8 @@ export default function ProfilePage() {
                   startAdornment: <LocationOn sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
 
@@ -421,8 +422,8 @@ export default function ProfilePage() {
                   startAdornment: <Language sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </Container>

@@ -99,14 +99,14 @@ function App() {
           
           {/* Остальные страницы только через Telegram */}
           <Route path="/" element={
-            <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+            <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
               <Layout>
                 <HomePage />
               </Layout>
             </TelegramGuard>
           } />
           <Route path="/profile" element={
-            <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+            <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
               <Layout>
                 <ProfilePage />
               </Layout>
@@ -115,7 +115,7 @@ function App() {
           <Route 
             path="/tasks" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <TasksPage />
@@ -127,7 +127,7 @@ function App() {
           <Route 
             path="/tasks/:id" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <TaskDetailPage />
@@ -139,7 +139,7 @@ function App() {
           <Route 
             path="/tasks/:id/report" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <ReportsPage />
@@ -151,7 +151,7 @@ function App() {
           <Route 
             path="/reports" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <ReportsPage />
@@ -163,7 +163,7 @@ function App() {
           <Route 
             path="/flariki" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <FlarikiPage />
@@ -175,7 +175,7 @@ function App() {
           <Route 
             path="/shop" 
             element={
-              <TelegramGuard allowDev={process.env.NODE_ENV === 'development'}>
+              <TelegramGuard allowDev={import.meta.env.MODE === 'development'}>
                 <Layout>
                   <ProtectedRoute requireActive requireProfile>
                     <ShopPage />

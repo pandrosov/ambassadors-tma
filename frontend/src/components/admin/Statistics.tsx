@@ -3,7 +3,7 @@ import {
   Box,
   Paper,
   Typography,
-  Grid2,
+  Grid,
   Button,
   Table,
   TableBody,
@@ -154,8 +154,8 @@ export default function Statistics() {
         <Typography variant="h6" gutterBottom>
           Фильтры
         </Typography>
-        <Grid2 container spacing={2}>
-          <Grid2 xs={12} sm={6} md={3}>
+        <Grid container spacing={2}>
+          <Grid xs={12} sm={6} md={3}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Начальная дата"
@@ -208,8 +208,8 @@ export default function Statistics() {
                 ))}
               </Select>
             </FormControl>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Paper>
 
       {error && (

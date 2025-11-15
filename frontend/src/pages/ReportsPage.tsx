@@ -14,8 +14,6 @@ import {
   MenuItem,
   IconButton,
   Chip,
-  CircularProgress,
-  Alert,
 } from '@mui/material';
 import {
   Add,
@@ -49,7 +47,6 @@ export default function ReportsPage() {
   // Несколько сторис
   const [stories, setStories] = useState<Story[]>([]);
   // Legacy поля для обратной совместимости
-  const [screenshotUrl, setScreenshotUrl] = useState('');
   const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
   const [storyUrl, setStoryUrl] = useState('');

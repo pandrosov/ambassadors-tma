@@ -17,7 +17,7 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Grid2,
+  Grid,
   Alert,
 } from '@mui/material';
 import { TrendingUp } from '@mui/icons-material';
@@ -136,8 +136,8 @@ export default function Leaderboard() {
         <Typography variant="h6" gutterBottom>
           Фильтры
         </Typography>
-        <Grid2 container spacing={2}>
-          <Grid2 xs={12} sm={6} md={4}>
+        <Grid container spacing={2}>
+          <Grid xs={12} sm={6} md={4}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Начальная дата"
@@ -173,8 +173,8 @@ export default function Leaderboard() {
                 ))}
               </Select>
             </FormControl>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Paper>
 
       {error && (

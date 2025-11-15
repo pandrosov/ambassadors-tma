@@ -4,7 +4,7 @@ import {
   Box,
   Container,
   Typography,
-  Grid2,
+  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -50,7 +50,6 @@ interface Purchase {
 }
 
 export default function ShopPage() {
-  const navigate = useNavigate();
   const { user, initAuth } = useAuthStore();
   const [shopItems, setShopItems] = useState<ShopItem[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
