@@ -3,8 +3,7 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
-  TextField,
+  Grid2,
   Button,
   Table,
   TableBody,
@@ -155,8 +154,8 @@ export default function Statistics() {
         <Typography variant="h6" gutterBottom>
           Фильтры
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Grid2 container spacing={2}>
+          <Grid2 xs={12} sm={6} md={3}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Начальная дата"
@@ -165,8 +164,8 @@ export default function Statistics() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Grid2>
+          <Grid2 xs={12} sm={6} md={3}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Конечная дата"
@@ -175,8 +174,8 @@ export default function Statistics() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Grid2>
+          <Grid2 xs={12} sm={6} md={3}>
             <FormControl fullWidth>
               <InputLabel>Пользователь</InputLabel>
               <Select
@@ -192,8 +191,8 @@ export default function Statistics() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Grid2>
+          <Grid2 xs={12} sm={6} md={3}>
             <FormControl fullWidth>
               <InputLabel>Задание</InputLabel>
               <Select
@@ -209,8 +208,8 @@ export default function Statistics() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Paper>
 
       {error && (
@@ -225,8 +224,8 @@ export default function Statistics() {
         </Box>
       ) : statistics ? (
         <>
-          <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={3}>
+          <Grid2 container spacing={3} sx={{ mb: 3 }}>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -237,8 +236,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -249,8 +248,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -261,8 +260,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -273,8 +272,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -285,8 +284,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -297,8 +296,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -309,8 +308,8 @@ export default function Statistics() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
 
           {/* Графики можно добавить после установки recharts */}
 

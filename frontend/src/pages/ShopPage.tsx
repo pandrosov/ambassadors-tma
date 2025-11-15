@@ -4,7 +4,7 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
+  Grid2,
   Card,
   CardContent,
   CardMedia,
@@ -24,8 +24,6 @@ import {
 import {
   ShoppingCart,
   AccountBalanceWallet,
-  CheckCircle,
-  Cancel,
 } from '@mui/icons-material';
 import { shopApi } from '../lib/api';
 import { useAuthStore } from '../store/auth';
@@ -255,9 +253,9 @@ export default function ShopPage() {
               Нет доступных товаров
             </Alert>
           ) : (
-            <Grid container spacing={3}>
+            <Grid2 container spacing={3}>
               {filteredItems.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item.id}>
+                <Grid2 xs={12} sm={6} md={4} key={item.id}>
                   <Card
                     sx={{
                       height: '100%',
@@ -319,9 +317,9 @@ export default function ShopPage() {
                       </Button>
                     </CardActions>
                   </Card>
-                </Grid>
+                </Grid2>
               ))}
-            </Grid>
+            </Grid2>
           )}
         </>
       )}
@@ -333,9 +331,9 @@ export default function ShopPage() {
               У вас пока нет покупок
             </Alert>
           ) : (
-            <Grid container spacing={2}>
+            <Grid2 container spacing={2}>
               {purchases.map((purchase) => (
-                <Grid item xs={12} key={purchase.id}>
+                <Grid2 xs={12} key={purchase.id}>
                   <Card>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -369,9 +367,9 @@ export default function ShopPage() {
                       </Box>
                     </CardContent>
                   </Card>
-                </Grid>
+                </Grid2>
               ))}
-            </Grid>
+            </Grid2>
           )}
         </>
       )}

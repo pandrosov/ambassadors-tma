@@ -16,13 +16,11 @@ import {
   Chip,
   CircularProgress,
   Alert,
-  Grid,
 } from '@mui/material';
 import {
   Add,
   Delete,
   Send,
-  Image,
   CloudUpload,
 } from '@mui/icons-material';
 import { reportsApi, productsApi } from '../lib/api';

@@ -23,7 +23,7 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
-import { Add, Edit, Delete, ShoppingCart } from '@mui/icons-material';
+import { Add, Edit, Delete } from '@mui/icons-material';
 import { adminApi } from '../../lib/api';
 
 interface ShopItem {

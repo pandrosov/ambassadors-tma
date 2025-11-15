@@ -9,10 +9,7 @@ import {
   Button,
   Avatar,
   Chip,
-  Grid,
-  Divider,
-  CircularProgress,
-  Alert,
+  Grid2,
 } from '@mui/material';
 import {
   Edit,
@@ -368,8 +365,8 @@ export default function ProfilePage() {
           <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
             Социальные сети
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+          <Grid2 container spacing={3}>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="Instagram"
@@ -382,8 +379,8 @@ export default function ProfilePage() {
                   startAdornment: <Instagram sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="YouTube"
@@ -396,8 +393,8 @@ export default function ProfilePage() {
                   startAdornment: <YouTube sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="TikTok"
@@ -410,8 +407,8 @@ export default function ProfilePage() {
                   startAdornment: <MusicNote sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 xs={12}>
               <TextField
                 fullWidth
                 label="VK"
@@ -424,8 +421,8 @@ export default function ProfilePage() {
                   startAdornment: <Language sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </CardContent>
       </Card>
     </Container>
