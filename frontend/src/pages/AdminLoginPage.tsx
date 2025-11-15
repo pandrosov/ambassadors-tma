@@ -21,26 +21,23 @@ export default function AdminLoginPage() {
       try {
         // Определяем backend URL
         const getBackendUrl = () => {
+          // Приоритет 1: Переменная окружения VITE_API_URL
           const env = (import.meta as any).env;
           if (env?.VITE_API_URL) {
             return env.VITE_API_URL;
           }
           
-          // Production на Railway
-          const currentHost = window.location.hostname;
-          if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
-            // Используем фиксированный URL бэкенда
-            return 'https://ambassadors-tma-production.up.railway.app';
+          // Fallback для разработки
+          const isDevelopment = import.meta.env.MODE === 'development' || 
+                                window.location.hostname === 'localhost' || 
+                                window.location.hostname === '127.0.0.1';
+          
+          if (isDevelopment) {
+            return 'http://localhost:3000';
           }
           
-          const savedBackendUrl = localStorage.getItem('backend_api_url');
-          if (savedBackendUrl) {
-            return savedBackendUrl;
-          }
-          if (currentHost.includes('trycloudflare.com')) {
-            return 'https://celebrities-lopez-got-left.trycloudflare.com';
-          }
-          return 'http://localhost:3000';
+          // Production fallback (временный, до настройки VITE_API_URL)
+          return 'https://ambassadors-tma-production.up.railway.app';
         };
 
         const backendUrl = getBackendUrl();
@@ -75,32 +72,23 @@ export default function AdminLoginPage() {
     try {
       // Определяем backend URL для админ-панели
       const getBackendUrl = () => {
-        // Приоритет 1: Переменная окружения
+        // Приоритет 1: Переменная окружения VITE_API_URL
         const env = (import.meta as any).env;
         if (env?.VITE_API_URL) {
           return env.VITE_API_URL;
         }
         
-        // Приоритет 2: Production на Railway
-        const currentHost = window.location.hostname;
-        if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
-          // Используем фиксированный URL бэкенда
-          return 'https://ambassadors-tma-production.up.railway.app';
+        // Fallback для разработки
+        const isDevelopment = import.meta.env.MODE === 'development' || 
+                              window.location.hostname === 'localhost' || 
+                              window.location.hostname === '127.0.0.1';
+        
+        if (isDevelopment) {
+          return 'http://localhost:3000';
         }
         
-        // Приоритет 3: localStorage (сохраненный URL)
-        const savedBackendUrl = localStorage.getItem('backend_api_url');
-        if (savedBackendUrl) {
-          return savedBackendUrl;
-        }
-        
-        // Приоритет 4: Если это Cloudflare домен, используем backend туннель
-        if (currentHost.includes('trycloudflare.com')) {
-          return 'https://celebrities-lopez-got-left.trycloudflare.com';
-        }
-        
-        // По умолчанию: localhost для локальной разработки
-        return 'http://localhost:3000';
+        // Production fallback (временный, до настройки VITE_API_URL)
+        return 'https://ambassadors-tma-production.up.railway.app';
       };
 
       const backendUrl = getBackendUrl();

@@ -3,43 +3,31 @@ import { getInitData, getTelegramUser } from './telegram';
 
 // Определяем API URL в зависимости от окружения
 const getApiUrl = () => {
-  // Приоритет 1: Переменная окружения (самый надежный способ)
+  // Приоритет 1: Переменная окружения VITE_API_URL (обязательна для production)
   const env = import.meta.env as any;
   if (env.VITE_API_URL) {
-    console.log('Using backend URL from VITE_API_URL:', env.VITE_API_URL);
+    console.log('✅ Using backend URL from VITE_API_URL:', env.VITE_API_URL);
     return env.VITE_API_URL;
   }
   
-  // Приоритет 2: Production на Railway - определяем URL бэкенда автоматически
-  const currentHost = window.location.hostname;
-  const isProduction = currentHost.includes('railway.app') || currentHost.includes('up.railway.app');
+  // Fallback для разработки: localhost
+  const isDevelopment = import.meta.env.MODE === 'development' || 
+                        window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1';
   
-  if (isProduction) {
-    // На Railway используем фиксированный URL бэкенда
-    // Реальный URL бэкенда: ambassadors-tma-production.up.railway.app
-    const backendUrl = 'https://ambassadors-tma-production.up.railway.app';
-    
-    console.log('Production mode detected. Using backend URL:', backendUrl);
-    console.warn('⚠️ Для production рекомендуется установить VITE_API_URL в Railway Variables');
-    return backendUrl;
+  if (isDevelopment) {
+    console.log('🔧 Development mode: using localhost:3000');
+    return 'http://localhost:3000';
   }
   
-  // Приоритет 3: Если запущено в Telegram через cloudflare/ngrok
-  if (currentHost.includes('trycloudflare.com') || currentHost.includes('ngrok')) {
-    // Пробуем загрузить backend URL из localStorage (сохраняется скриптом)
-    const savedBackendUrl = localStorage.getItem('backend_api_url');
-    if (savedBackendUrl) {
-      console.log('Using saved backend URL:', savedBackendUrl);
-      return savedBackendUrl;
-    }
-    
-    console.warn('Backend URL не настроен! Создайте туннель для backend и установите VITE_API_URL');
-    console.warn('Или выполните: localStorage.setItem("backend_api_url", "https://your-backend-url.trycloudflare.com")');
-  }
+  // Production без VITE_API_URL - ошибка конфигурации
+  console.error('❌ VITE_API_URL не установлена! Установите переменную окружения VITE_API_URL в Railway Variables');
+  console.error('Текущий hostname:', window.location.hostname);
   
-  // По умолчанию: localhost для локальной разработки
-  console.log('Development mode: using localhost:3000');
-  return 'http://localhost:3000';
+  // Временный fallback для отладки (удалить после настройки VITE_API_URL)
+  const fallbackUrl = 'https://ambassadors-tma-production.up.railway.app';
+  console.warn('⚠️ Используется временный fallback URL:', fallbackUrl);
+  return fallbackUrl;
 };
 
 const API_URL = getApiUrl();

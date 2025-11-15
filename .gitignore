@@ -39,7 +39,8 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 
 # Prisma
-backend/prisma/migrations/
+# Миграции должны быть в репозитории для Railway
+# backend/prisma/migrations/
 
 # Certificates
 frontend/.cert/

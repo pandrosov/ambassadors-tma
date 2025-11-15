@@ -101,8 +101,7 @@ app.use((req, res, next) => {
   
   // Логируем ответные заголовки CORS для OPTIONS запросов
   if (req.method === 'OPTIONS') {
-    const originalEnd = res.end;
-    res.end = function(...args: any[]) {
+    res.on('finish', () => {
       console.log(`[CORS DEBUG] OPTIONS response`, {
         statusCode: res.statusCode,
         headers: {
@@ -111,8 +110,7 @@ app.use((req, res, next) => {
           'access-control-allow-headers': res.getHeader('access-control-allow-headers'),
         }
       });
-      originalEnd.apply(res, args);
-    };
+    });
   }
   
   next();

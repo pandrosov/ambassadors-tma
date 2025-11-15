@@ -28,26 +28,23 @@ export default function AdminRoute({ children }: AdminRouteProps) {
       try {
         // Определяем backend URL (та же логика, что в AdminLoginPage)
         const getBackendUrl = () => {
+          // Приоритет 1: Переменная окружения VITE_API_URL
           const env = (import.meta as any).env;
           if (env?.VITE_API_URL) {
             return env.VITE_API_URL;
           }
           
-          // Production на Railway
-          const currentHost = window.location.hostname;
-          if (currentHost.includes('railway.app') || currentHost.includes('up.railway.app')) {
-            // Используем фиксированный URL бэкенда
-            return 'https://ambassadors-tma-production.up.railway.app';
+          // Fallback для разработки
+          const isDevelopment = import.meta.env.MODE === 'development' || 
+                                window.location.hostname === 'localhost' || 
+                                window.location.hostname === '127.0.0.1';
+          
+          if (isDevelopment) {
+            return 'http://localhost:3000';
           }
           
-          const savedBackendUrl = localStorage.getItem('backend_api_url');
-          if (savedBackendUrl) {
-            return savedBackendUrl;
-          }
-          if (currentHost.includes('trycloudflare.com')) {
-            return 'https://celebrities-lopez-got-left.trycloudflare.com';
-          }
-          return 'http://localhost:3000';
+          // Production fallback (временный, до настройки VITE_API_URL)
+          return 'https://ambassadors-tma-production.up.railway.app';
         };
 
         const backendUrl = getBackendUrl();
