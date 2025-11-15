@@ -45,8 +45,35 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   // Проверяем, есть ли JWT токен в localStorage (для админ-панели)
   const jwtToken = localStorage.getItem('admin_token');
-  if (jwtToken && config.url?.includes('/admin')) {
+  
+  // Список админских эндпоинтов, которые требуют JWT токен
+  const adminEndpoints = [
+    '/api/admin/',
+    '/api/tasks', // создание/публикация задач
+    '/api/statistics/', // статистика
+    '/api/products', // управление товарами
+    '/api/shop/purchases/', // управление покупками
+  ];
+  
+  // Проверяем, является ли запрос админским
+  const isAdminRequest = jwtToken && (
+    config.url?.includes('/admin/') ||
+    adminEndpoints.some(endpoint => {
+      if (endpoint.endsWith('/')) {
+        return config.url?.startsWith(endpoint);
+      }
+      // Для POST/PUT/PATCH/DELETE на эти эндпоинты используем JWT
+      if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(config.method?.toUpperCase() || '')) {
+        return config.url === endpoint || config.url?.startsWith(endpoint + '/');
+      }
+      // Для GET проверяем точное совпадение или начало пути
+      return config.url === endpoint || config.url?.startsWith(endpoint + '/');
+    })
+  );
+  
+  if (isAdminRequest) {
     config.headers['Authorization'] = `Bearer ${jwtToken}`;
+    console.log('API Request: Using JWT token for admin endpoint:', config.url);
     return config;
   }
 
