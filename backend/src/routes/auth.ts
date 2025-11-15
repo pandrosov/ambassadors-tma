@@ -11,6 +11,56 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+// Активация администратора (для исправления статуса)
+router.post('/admin/activate', async (req, res) => {
+  try {
+    const data = loginSchema.parse(req.body);
+    
+    const user = await prisma.user.findFirst({
+      where: { email: data.email },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Пользователь не найден' });
+    }
+
+    if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+      return res.status(403).json({ error: 'Пользователь не является администратором' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        status: 'ACTIVE',
+        role: 'ADMIN',
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        status: true,
+      },
+    });
+
+    const token = generateToken({
+      userId: updatedUser.id,
+      role: updatedUser.role,
+    });
+
+    res.json({
+      message: 'Администратор активирован',
+      token,
+      user: updatedUser,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation error', details: error.errors });
+    }
+    console.error('Activate admin error:', error);
+    res.status(500).json({ error: 'Failed to activate admin' });
+  }
+});
+
 // Создание первого администратора (только если в базе нет админов)
 router.post('/admin/create-first', async (req, res) => {
   try {
