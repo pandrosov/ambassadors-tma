@@ -378,7 +378,7 @@ router.patch('/:id', authenticateTelegram, requireRole('MANAGER', 'ADMIN'), asyn
     if (data.status === 'APPROVED') {
       const task = await prisma.task.findUnique({
         where: { id: report.taskId },
-        select: { rewardFlariki: true },
+        select: { rewardFlariki: true, title: true },
       });
 
       if (task?.rewardFlariki && task.rewardFlariki > 0) {
@@ -408,7 +408,7 @@ router.patch('/:id', authenticateTelegram, requireRole('MANAGER', 'ADMIN'), asyn
       try {
         await sendTelegramMessage(
           report.user.telegramId,
-          `✅ Ваш отчет по заданию "${report.task.title}" одобрен!${task?.rewardFlariki ? `\n💰 Начислено ${task.rewardFlariki} флариков` : ''}`
+          `✅ Ваш отчет по заданию "${task?.title || report.task.title}" одобрен!${task?.rewardFlariki ? `\n💰 Начислено ${task.rewardFlariki} флариков` : ''}`
         );
       } catch (error) {
         console.error('Failed to send approval notification:', error);

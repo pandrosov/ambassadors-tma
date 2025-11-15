@@ -68,7 +68,7 @@ export function requireProfileFilled(req: Request, res: Response, next: NextFunc
 export function requireActiveStatus(req: Request, res: Response, next: NextFunction) {
   const user = req.user;
   
-  console.log('requireActiveStatus: Checking status for user:', user?.id, 'status:', user?.status);
+  console.log('requireActiveStatus: Checking status for user:', user?.id);
   
   if (!user) {
     console.warn('requireActiveStatus: Unauthorized - no user in request');

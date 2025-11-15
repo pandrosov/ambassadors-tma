@@ -109,7 +109,12 @@ export async function parseReportStats(reportId: string): Promise<void> {
       select: {
         id: true,
         type: true,
-        videoLink: true,
+        videoLinks: {
+          select: {
+            url: true,
+            platform: true,
+          },
+        },
         screenshotUrl: true,
       },
     });
@@ -120,18 +125,21 @@ export async function parseReportStats(reportId: string): Promise<void> {
 
     let stats: SocialStats = {};
 
-    if (report.type === 'VIDEO_LINK' && report.videoLink) {
-      const platform = detectSocialPlatform(report.videoLink);
+    if (report.type === 'VIDEO_LINK' && report.videoLinks && report.videoLinks.length > 0) {
+      // Берем первую ссылку для парсинга
+      const videoLink = report.videoLinks[0];
+      const url = videoLink.url;
+      const platform = videoLink.platform || detectSocialPlatform(url);
       
       switch (platform) {
         case 'youtube':
-          stats = await parseYouTubeStats(report.videoLink);
+          stats = await parseYouTubeStats(url);
           break;
         case 'tiktok':
-          stats = await parseTikTokStats(report.videoLink);
+          stats = await parseTikTokStats(url);
           break;
         default:
-          console.warn(`Unsupported platform for URL: ${report.videoLink}`);
+          console.warn(`Unsupported platform for URL: ${url}`);
       }
     } else if (report.type === 'STORY_SCREENSHOT' && report.screenshotUrl) {
       // Для скриншотов сторис статистика может быть извлечена из изображения через OCR
@@ -183,7 +191,7 @@ export async function weeklyStatsParse() {
         status: 'APPROVED',
         OR: [
           { views: null },
-          { videoLink: { not: null } },
+          { videoLinks: { some: {} } },
         ],
       },
       select: {

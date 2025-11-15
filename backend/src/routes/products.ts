@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma';
-import { authenticateAdmin, requireRole } from '../middleware/auth';
+import { authenticateAdmin, requireRole } from '../middleware/adminAuth';
 import { z } from 'zod';
 import { createAuditLog } from '../lib/auditLog';
 

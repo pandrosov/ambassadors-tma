@@ -62,7 +62,11 @@ router.get('/transactions', authenticateTelegram, async (req, res) => {
           report: {
             select: {
               id: true,
-              videoLink: true,
+              videoLinks: {
+                select: {
+                  url: true,
+                },
+              },
             },
           },
         },

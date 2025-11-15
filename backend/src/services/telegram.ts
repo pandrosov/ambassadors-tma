@@ -123,13 +123,11 @@ export async function sendReportReminder() {
         assignments: {
           include: {
             user: {
-              where: {
-                status: 'ACTIVE',
-              },
               select: {
                 id: true,
                 telegramId: true,
                 firstName: true,
+                status: true,
               },
             },
           },
@@ -143,7 +141,7 @@ export async function sendReportReminder() {
             where: { status: 'ACTIVE', role: 'AMBASSADOR' },
             select: { id: true },
           })).map(u => u.id)
-        : task.assignments.map(a => a.userId).filter(Boolean);
+        : task.assignments.filter(a => a.user && a.user.status === 'ACTIVE').map(a => a.user.id).filter(Boolean);
 
       for (const userId of userIds) {
         // Проверяем, есть ли уже отчет за эту неделю
@@ -230,6 +228,11 @@ export async function createReportChat(reportId: string) {
             title: true,
           },
         },
+        videoLinks: {
+          select: {
+            url: true,
+          },
+        },
       },
     });
 
@@ -246,7 +249,7 @@ export async function createReportChat(reportId: string) {
       userId: report.user.telegramId,
       userName: `${report.user.firstName || ''} ${report.user.lastName || ''}`.trim(),
       taskTitle: report.task.title,
-      videoLink: report.videoLink,
+      videoLink: report.videoLinks && report.videoLinks.length > 0 ? report.videoLinks[0].url : null,
       screenshotUrl: report.screenshotUrl,
     };
   } catch (error) {

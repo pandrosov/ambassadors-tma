@@ -48,6 +48,11 @@ export async function syncReportToSheets(reportId: string) {
             title: true,
           },
         },
+        videoLinks: {
+          select: {
+            url: true,
+          },
+        },
       },
     });
 
@@ -85,7 +90,7 @@ export async function syncReportToSheets(reportId: string) {
         report.user.telegramId.toString(),
         report.task.title,
         report.type,
-        report.videoLink || report.screenshotUrl || '',
+        (report.videoLinks && report.videoLinks.length > 0 ? report.videoLinks[0].url : '') || report.screenshotUrl || '',
         report.status,
         report.views || '',
         report.likes || '',

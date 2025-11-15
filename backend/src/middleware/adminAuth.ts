@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticateTelegram } from './auth';
+import { authenticateTelegram, requireRole as requireRoleAuth } from './auth';
 import { authenticateJWT } from './jwtAuth';
 
 /**
@@ -18,4 +18,9 @@ export function authenticateAdmin(
   // Иначе используем Telegram аутентификацию
   return authenticateTelegram(req, res, next);
 }
+
+/**
+ * Экспорт requireRole для совместимости
+ */
+export const requireRole = requireRoleAuth;
 

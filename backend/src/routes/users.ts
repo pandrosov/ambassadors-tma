@@ -331,7 +331,11 @@ router.get('/me/flariki', authenticateTelegram, async (req, res) => {
         report: {
           select: {
             id: true,
-            videoLink: true,
+            videoLinks: {
+              select: {
+                url: true,
+              },
+            },
           },
         },
       },
