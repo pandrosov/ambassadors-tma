@@ -83,15 +83,23 @@ const corsOptions = {
   maxAge: 86400, // 24 часа
 };
 
-// Обработка OPTIONS запросов (CORS preflight) ПЕРЕД CORS middleware
-// Это гарантирует, что preflight запросы обрабатываются правильно
-app.options('*', cors(corsOptions), (req, res) => {
-  console.log(`[CORS] Preflight request from ${req.headers.origin} to ${req.path}`);
-  res.sendStatus(200);
+// CORS middleware ДОЛЖЕН быть ПЕРВЫМ после базовых настроек
+// Это критически важно для правильной обработки preflight запросов
+app.use(cors(corsOptions));
+
+// Логирование всех запросов для отладки CORS (в production тоже)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log(`[CORS DEBUG] OPTIONS request from ${req.headers.origin} to ${req.path}`);
+    console.log(`[CORS DEBUG] Request headers:`, {
+      origin: req.headers.origin,
+      'access-control-request-method': req.headers['access-control-request-method'],
+      'access-control-request-headers': req.headers['access-control-request-headers'],
+    });
+  }
+  next();
 });
 
-// Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
