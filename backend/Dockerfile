@@ -66,4 +66,5 @@ EXPOSE 3000
 
 # Запускаем миграции Prisma перед запуском приложения
 # Railway автоматически устанавливает DATABASE_URL
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+# Если миграций нет, используем db push для применения схемы
+CMD ["sh", "-c", "npx prisma migrate deploy || npx prisma db push --accept-data-loss && node dist/index.js"]
