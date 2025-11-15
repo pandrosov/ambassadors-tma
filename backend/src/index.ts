@@ -78,12 +78,10 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 
-// Логирование CORS для отладки
-app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    console.log(`[CORS] Preflight request from ${req.headers.origin}`);
-  }
-  next();
+// Обработка OPTIONS запросов (CORS preflight) перед роутами
+app.options('*', (req, res) => {
+  console.log(`[CORS] Preflight request from ${req.headers.origin} to ${req.path}`);
+  res.sendStatus(200);
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

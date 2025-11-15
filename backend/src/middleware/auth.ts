@@ -24,6 +24,11 @@ export async function authenticateTelegram(
   res: Response,
   next: NextFunction
 ) {
+  // Пропускаем OPTIONS запросы (CORS preflight) без проверки аутентификации
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   try {
     const initData = req.headers['x-telegram-init-data'] as string;
     const telegramIdHeader = req.headers['x-telegram-id'] as string;

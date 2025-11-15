@@ -11,6 +11,11 @@ export function authenticateAdmin(
   res: Response,
   next: NextFunction
 ) {
+  // Пропускаем OPTIONS запросы (CORS preflight) без проверки аутентификации
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   // Если есть Bearer токен, используем JWT
   if (req.headers.authorization?.startsWith('Bearer ')) {
     return authenticateJWT(req, res, next);

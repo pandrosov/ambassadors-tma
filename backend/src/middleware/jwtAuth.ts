@@ -7,6 +7,11 @@ export async function authenticateJWT(
   res: Response,
   next: NextFunction
 ) {
+  // Пропускаем OPTIONS запросы (CORS preflight) без проверки аутентификации
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   try {
     const authHeader = req.headers.authorization;
     
