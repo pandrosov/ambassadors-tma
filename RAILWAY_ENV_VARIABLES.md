@@ -70,6 +70,7 @@ NODE_ENV=production
    - `TELEGRAM_BOT_TOKEN` - получите у [@BotFather](https://t.me/BotFather) в Telegram
    - `JWT_SECRET` - сгенерируйте случайную строку (минимум 32 символа)
    - `NODE_ENV=production`
+   - `PORT=3000` - ⚠️ **ВАЖНО:** Явно установите порт 3000, чтобы он совпадал с настройками Networking
    - `FRONTEND_URL` - URL вашего фронтенд сервиса (например: `https://amb-frontend-production.up.railway.app`)
      - ⚠️ **ВАЖНО:** Укажите точный URL фронтенда, включая поддомен и домен Railway
 
