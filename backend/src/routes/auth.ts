@@ -139,22 +139,21 @@ router.get('/admin/me', async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('Admin /me: No authorization header');
+      console.log('[Admin /me] No authorization header');
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const token = authHeader.substring(7);
-    console.log('Admin /me: Verifying token...');
+    console.log('[Admin /me] Verifying token...');
     
-    const { verifyToken } = await import('../lib/jwt');
     const payload = verifyToken(token);
 
     if (!payload) {
-      console.log('Admin /me: Invalid token');
-      return res.status(401).json({ error: 'Unauthorized' });
+      console.log('[Admin /me] Invalid token');
+      return res.status(401).json({ error: 'Invalid token' });
     }
 
-    console.log('Admin /me: Token verified, userId:', payload.userId);
+    console.log('[Admin /me] Token verified, userId:', payload.userId);
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
@@ -164,19 +163,31 @@ router.get('/admin/me', async (req, res) => {
         role: true,
         firstName: true,
         lastName: true,
+        status: true,
       },
     });
 
     if (!user) {
-      console.log('Admin /me: User not found, userId:', payload.userId);
+      console.log('[Admin /me] User not found, userId:', payload.userId);
       return res.status(401).json({ error: 'User not found' });
     }
 
-    console.log('Admin /me: User found:', user.email);
-    res.json(user);
+    if (user.status !== 'ACTIVE') {
+      console.log('[Admin /me] User not active, userId:', payload.userId);
+      return res.status(403).json({ error: 'Account is not active' });
+    }
+
+    console.log('[Admin /me] User found:', user.email);
+    res.json({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
   } catch (error: any) {
-    console.error('Get me error:', error);
-    console.error('Error stack:', error.stack);
+    console.error('[Admin /me] Error:', error);
+    console.error('[Admin /me] Error stack:', error.stack);
     res.status(500).json({ 
       error: 'Failed to get user',
       message: process.env.NODE_ENV === 'development' ? error.message : undefined
