@@ -89,14 +89,32 @@ app.use(cors(corsOptions));
 
 // Логирование всех запросов для отладки CORS (в production тоже)
 app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    console.log(`[CORS DEBUG] OPTIONS request from ${req.headers.origin} to ${req.path}`);
-    console.log(`[CORS DEBUG] Request headers:`, {
-      origin: req.headers.origin,
+  // Логируем все запросы для отладки
+  console.log(`[REQUEST] ${req.method} ${req.path}`, {
+    origin: req.headers.origin,
+    method: req.method,
+    headers: {
       'access-control-request-method': req.headers['access-control-request-method'],
       'access-control-request-headers': req.headers['access-control-request-headers'],
-    });
+    }
+  });
+  
+  // Логируем ответные заголовки CORS для OPTIONS запросов
+  if (req.method === 'OPTIONS') {
+    const originalEnd = res.end;
+    res.end = function(...args: any[]) {
+      console.log(`[CORS DEBUG] OPTIONS response`, {
+        statusCode: res.statusCode,
+        headers: {
+          'access-control-allow-origin': res.getHeader('access-control-allow-origin'),
+          'access-control-allow-methods': res.getHeader('access-control-allow-methods'),
+          'access-control-allow-headers': res.getHeader('access-control-allow-headers'),
+        }
+      });
+      originalEnd.apply(res, args);
+    };
   }
+  
   next();
 });
 
