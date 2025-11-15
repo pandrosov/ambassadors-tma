@@ -50,8 +50,8 @@ api.interceptors.request.use(async (config) => {
   const adminEndpoints = [
     '/api/admin/',
     '/api/tasks', // создание/публикация задач
-    '/api/statistics/', // статистика
-    '/api/products', // управление товарами
+    '/api/statistics/', // статистика (все запросы от админов)
+    '/api/products', // управление товарами (все запросы от админов)
     '/api/shop/purchases/', // управление покупками
   ];
   
@@ -60,13 +60,10 @@ api.interceptors.request.use(async (config) => {
     config.url?.includes('/admin/') ||
     adminEndpoints.some(endpoint => {
       if (endpoint.endsWith('/')) {
+        // Для эндпоинтов с / в конце проверяем начало пути
         return config.url?.startsWith(endpoint);
       }
-      // Для POST/PUT/PATCH/DELETE на эти эндпоинты используем JWT
-      if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(config.method?.toUpperCase() || '')) {
-        return config.url === endpoint || config.url?.startsWith(endpoint + '/');
-      }
-      // Для GET проверяем точное совпадение или начало пути
+      // Для всех методов на эти эндпоинты используем JWT (включая GET)
       return config.url === endpoint || config.url?.startsWith(endpoint + '/');
     })
   );
