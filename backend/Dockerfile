@@ -2,7 +2,8 @@
 # Railway использует этот файл когда Root Directory = backend
 # ВАЖНО: Railway всегда использует корень репозитория как build context
 # Root Directory влияет только на поиск Dockerfile, но не на build context
-FROM node:18-alpine AS builder
+# Используем обычный node:18 вместо alpine для совместимости с Prisma и OpenSSL
+FROM node:18 AS builder
 
 WORKDIR /app
 
@@ -27,13 +28,9 @@ WORKDIR /app/backend
 RUN npx prisma generate && npm run build
 
 # Production образ
-FROM node:18-alpine
-
-# Устанавливаем OpenSSL 1.1 для Prisma из edge репозитория
-# Prisma требует libssl.so.1.1 для работы в Alpine Linux
-# В Alpine 3.21 openssl1.1-compat доступен только в edge репозитории
-RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    apk add --no-cache openssl1.1-compat@edge
+# Используем обычный node:18 вместо alpine для совместимости с Prisma
+# Обычный образ уже содержит все необходимые библиотеки (включая OpenSSL)
+FROM node:18
 
 WORKDIR /app
 
