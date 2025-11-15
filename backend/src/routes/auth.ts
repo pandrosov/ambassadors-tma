@@ -11,6 +11,61 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+// Создание первого администратора (только если в базе нет админов)
+router.post('/admin/create-first', async (req, res) => {
+  try {
+    // Проверяем, есть ли уже администраторы
+    const adminCount = await prisma.user.count({
+      where: { role: 'ADMIN' },
+    });
+
+    if (adminCount > 0) {
+      return res.status(403).json({ 
+        error: 'Администратор уже существует. Используйте обычный вход.' 
+      });
+    }
+
+    const data = loginSchema.parse(req.body);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    const admin = await prisma.user.create({
+      data: {
+        email: data.email,
+        passwordHash: hashedPassword,
+        role: 'ADMIN',
+        status: 'ACTIVE',
+        telegramId: 0,
+        flarikiBalance: 0,
+        firstName: 'Admin',
+        lastName: 'User',
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        status: true,
+      },
+    });
+
+    const token = generateToken({
+      userId: admin.id,
+      role: admin.role,
+    });
+
+    res.status(201).json({
+      message: 'Первый администратор успешно создан!',
+      token,
+      user: admin,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation error', details: error.errors });
+    }
+    console.error('Create first admin error:', error);
+    res.status(500).json({ error: 'Failed to create admin' });
+  }
+});
+
 // Вход для админ-панели
 router.post('/admin/login', async (req, res) => {
   try {
