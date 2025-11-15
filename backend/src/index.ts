@@ -75,14 +75,15 @@ const corsOptions = {
   maxAge: 86400, // 24 часа
 };
 
-// Middleware
-app.use(cors(corsOptions));
-
-// Обработка OPTIONS запросов (CORS preflight) перед роутами
-app.options('*', (req, res) => {
+// Обработка OPTIONS запросов (CORS preflight) ПЕРЕД CORS middleware
+// Это гарантирует, что preflight запросы обрабатываются правильно
+app.options('*', cors(corsOptions), (req, res) => {
   console.log(`[CORS] Preflight request from ${req.headers.origin} to ${req.path}`);
   res.sendStatus(200);
 });
+
+// Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
