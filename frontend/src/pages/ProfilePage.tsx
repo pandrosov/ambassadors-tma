@@ -319,8 +319,8 @@ export default function ProfilePage() {
                   startAdornment: <Phone sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12} sm={6}>
+            </Grid>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Email"
@@ -332,8 +332,8 @@ export default function ProfilePage() {
                   startAdornment: <Email sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </Grid>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="Ближайший ПВЗ СДЭК"
@@ -344,8 +344,8 @@ export default function ProfilePage() {
                   startAdornment: <LocationOn sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </Grid>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="Адрес проживания"
@@ -366,8 +366,8 @@ export default function ProfilePage() {
           <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
             Социальные сети
           </Typography>
-          <Grid2 container spacing={3}>
-            <Grid2 xs={12}>
+          <Grid container spacing={3}>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="Instagram"
@@ -380,8 +380,8 @@ export default function ProfilePage() {
                   startAdornment: <Instagram sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </Grid>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="YouTube"
@@ -394,8 +394,8 @@ export default function ProfilePage() {
                   startAdornment: <YouTube sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </Grid>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="TikTok"
@@ -408,8 +408,8 @@ export default function ProfilePage() {
                   startAdornment: <MusicNote sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </Grid>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 label="VK"

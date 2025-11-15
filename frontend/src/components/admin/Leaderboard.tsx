@@ -146,8 +146,8 @@ export default function Leaderboard() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid2>
-          <Grid2 xs={12} sm={6} md={4}>
+          </Grid>
+          <Grid xs={12} sm={6} md={4}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Конечная дата"
@@ -156,8 +156,8 @@ export default function Leaderboard() {
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </LocalizationProvider>
-          </Grid2>
-          <Grid2 xs={12} sm={6} md={4}>
+          </Grid>
+          <Grid xs={12} sm={6} md={4}>
             <FormControl fullWidth>
               <InputLabel>Задание</InputLabel>
               <Select
@@ -190,9 +190,9 @@ export default function Leaderboard() {
       ) : leaderboard && leaderboard.leaderboard.length > 0 ? (
         <>
           {/* Топ-3 */}
-          <Grid2 container spacing={2} sx={{ mb: 3 }}>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
             {leaderboard.leaderboard.slice(0, 3).map((entry, index) => (
-              <Grid2 xs={12} md={4} key={entry.userId}>
+              <Grid xs={12} md={4} key={entry.userId}>
                 <Card
                   sx={{
                     background: index === 0
@@ -242,9 +242,9 @@ export default function Leaderboard() {
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid2>
+              </Grid>
             ))}
-          </Grid2>
+          </Grid>
 
           {/* Полная таблица */}
           <TableContainer component={Paper}>
