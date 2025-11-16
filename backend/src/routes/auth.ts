@@ -84,7 +84,7 @@ router.post('/admin/create-first', async (req, res) => {
         passwordHash: hashedPassword,
         role: 'ADMIN',
         status: 'ACTIVE',
-        telegramId: 0,
+        telegramId: BigInt(0),
         flarikiBalance: 0,
         firstName: 'Admin',
         lastName: 'User',

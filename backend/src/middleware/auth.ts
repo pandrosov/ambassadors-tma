@@ -58,7 +58,7 @@ export async function authenticateTelegram(
 
     // Fallback на заголовок X-Telegram-Id
     if (!telegramId && telegramIdHeader) {
-      telegramId = parseInt(telegramIdHeader);
+      telegramId = BigInt(telegramIdHeader);
     }
     
     if (!telegramId) {

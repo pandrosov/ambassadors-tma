@@ -55,7 +55,7 @@ export async function authenticateJWT(
 
     req.user = {
       id: user.id,
-      telegramId: 0, // Не используется для JWT аутентификации
+      telegramId: BigInt(0), // Не используется для JWT аутентификации
       role: user.role,
     };
 
