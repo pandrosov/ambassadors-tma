@@ -117,6 +117,24 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+// Middleware для преобразования BigInt в строку при сериализации JSON
+app.use((req, res, next) => {
+  const originalJson = res.json.bind(res);
+  res.json = function (data: any) {
+    const jsonString = JSON.stringify(data, (key, value) => {
+      if (typeof value === 'bigint') {
+        return value.toString();
+      }
+      return value;
+    });
+    res.setHeader('Content-Type', 'application/json');
+    res.send(jsonString);
+    return res;
+  };
+  next();
+});
+
 app.use(express.urlencoded({ extended: true }));
 
 // Статические файлы для загруженных скриншотов
