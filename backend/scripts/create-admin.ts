@@ -44,7 +44,7 @@ async function createAdmin() {
         passwordHash: hashedPassword,
         role: 'ADMIN',
         status: 'ACTIVE',
-        telegramId: telegramId || 0, // Если telegramId не указан, используем 0
+        telegramId: telegramId ? BigInt(telegramId) : BigInt(0), // Если telegramId не указан, используем 0
         flarikiBalance: 0,
       },
     });

@@ -58,7 +58,7 @@ async function createAdmin() {
         status: 'ACTIVE',
         firstName,
         lastName,
-        telegramId: 0, // Временный ID
+        telegramId: BigInt(0), // Временный ID
         flarikiBalance: 0,
       },
     });
