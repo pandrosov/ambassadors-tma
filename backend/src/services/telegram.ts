@@ -79,7 +79,8 @@ export async function notifyNewTask(taskId: string, userIds: string[]) {
     for (const user of users) {
       try {
         console.log(`notifyNewTask: Sending to user ${user.id} (telegramId: ${user.telegramId})`);
-        await bot.sendMessage(user.telegramId, message, {
+        const telegramIdNumber = typeof user.telegramId === 'bigint' ? Number(user.telegramId) : user.telegramId;
+        await bot.sendMessage(telegramIdNumber, message, {
           reply_markup: {
             inline_keyboard: [
               [
@@ -167,8 +168,9 @@ export async function sendReportReminder() {
 
           if (user) {
             try {
+              const telegramIdNumber = typeof user.telegramId === 'bigint' ? Number(user.telegramId) : user.telegramId;
               await bot.sendMessage(
-                user.telegramId,
+                telegramIdNumber,
                 `📋 Напоминание: необходимо предоставить отчет по заданию "${task.title}"\n\nПожалуйста, отправьте ссылку на ролик или скриншот охвата сторис.`,
                 {
                   reply_markup: {
@@ -198,10 +200,12 @@ export async function sendReportReminder() {
 /**
  * Отправка сообщения пользователю через Telegram Bot
  */
-export async function sendTelegramMessage(telegramId: number, message: string): Promise<void> {
+export async function sendTelegramMessage(telegramId: bigint | number, message: string): Promise<void> {
   try {
     const bot = getTelegramBot();
-    await bot.sendMessage(telegramId, message);
+    // Преобразуем bigint в number для Telegram Bot API
+    const telegramIdNumber = typeof telegramId === 'bigint' ? Number(telegramId) : telegramId;
+    await bot.sendMessage(telegramIdNumber, message);
   } catch (error) {
     console.error(`Failed to send message to ${telegramId}:`, error);
     throw error;

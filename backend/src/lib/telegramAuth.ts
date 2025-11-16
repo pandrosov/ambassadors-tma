@@ -71,7 +71,7 @@ export function parseTelegramInitData(initData: string): {
 /**
  * Получение данных пользователя через Telegram Bot API
  */
-export async function getTelegramUserData(telegramId: number): Promise<{
+export async function getTelegramUserData(telegramId: bigint | number): Promise<{
   id: number;
   first_name?: string;
   last_name?: string;
@@ -82,9 +82,12 @@ export async function getTelegramUserData(telegramId: number): Promise<{
   try {
     const bot = getTelegramBot();
     
+    // Преобразуем bigint в number для Telegram Bot API
+    const telegramIdNumber = typeof telegramId === 'bigint' ? Number(telegramId) : telegramId;
+    
     // Пробуем получить данные через getChat
     try {
-      const user = await bot.getChat(telegramId);
+      const user = await bot.getChat(telegramIdNumber);
       
       return {
         id: user.id as number,

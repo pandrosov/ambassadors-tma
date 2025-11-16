@@ -8,7 +8,7 @@ declare global {
     interface Request {
       user?: {
         id: string;
-        telegramId: number;
+        telegramId: bigint;
         role: string;
       };
     }
@@ -33,7 +33,7 @@ export async function authenticateTelegram(
     const initData = req.headers['x-telegram-init-data'] as string;
     const telegramIdHeader = req.headers['x-telegram-id'] as string;
     
-    let telegramId: number | null = null;
+    let telegramId: bigint | null = null;
     let telegramUserData: any = null;
 
     // Пробуем получить данные из initData
@@ -43,7 +43,7 @@ export async function authenticateTelegram(
       if (isValid) {
         const parsed = parseTelegramInitData(initData);
         if (parsed.user?.id) {
-          telegramId = parsed.user.id;
+          telegramId = BigInt(parsed.user.id);
           telegramUserData = parsed.user;
           console.log('Got user data from initData:', {
             id: telegramUserData.id,

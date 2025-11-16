@@ -13,7 +13,7 @@ export enum UserStatus {
 
 export interface User {
   id: string;
-  telegramId: number;
+  telegramId: bigint;
   username?: string;
   firstName?: string;
   lastName?: string;
